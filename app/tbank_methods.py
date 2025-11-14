@@ -1,9 +1,13 @@
 import datetime
 import hashlib
+import threading
+import time
 import uuid
 
 import requests
+from django.utils import timezone
 
+from app.models import CustomUser, Server
 
 url = 'https://securepay.tinkoff.ru'
 termKey = '1760506943724DEMO'
@@ -45,3 +49,6 @@ def get_payment_status(paymentId: str):
     data['Token'] = generateToken(data)
     req = requests.post(url + '/v2/GetState', json=data)
     return req.json().get('Status')
+
+
+

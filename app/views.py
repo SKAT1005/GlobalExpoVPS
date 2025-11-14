@@ -1,8 +1,10 @@
 import base64
+import datetime
 import ipaddress
 import json
 import math
 import random
+import threading
 import time
 
 import requests
@@ -260,7 +262,6 @@ def delite_server(request):
         user = request.user
         server = user.servers.filter(server_id=server_id).first()
         if server:
-            delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
             server_price_per_hour = round(server.price / (24*30), 2)
             add_server_time = server.buy_date
             now_time = timezone.now()
@@ -269,6 +270,7 @@ def delite_server(request):
             return_money = max(0, round(server.price-complite_price,2))
             user.balance += return_money
             user.save(update_fields=['balance'])
+            delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
             requests.delete(url=delete_url, headers=headers)
             server.delete()
             return HttpResponse("OK")
@@ -460,3 +462,24 @@ class TbankWebhookView(View):
         else:
             ip = request.META.get('REMOTE_ADDR')
         return ip
+
+
+
+def update_server_price():
+    while True:
+        thirty_days_ago = timezone.now() - datetime.timedelta(days=30)
+        for server in Server.objects.filter(buy_date__lt=thirty_days_ago):
+            user = CustomUser.objects.filter(servers=server).first()
+            if user.balance >= server.price:
+                user.balance -= server.price
+                user.save(update_fields=['balance'])
+            else:
+                server_id = server.server_id
+                delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
+                requests.delete(url=delete_url, headers=headers)
+                server.delete()
+        time.sleep(60*60)
+
+
+polling_thread2 = threading.Thread(target=update_server_price)
+polling_thread2.start()
