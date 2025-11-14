@@ -1,0 +1,371 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Код подтверждения - Globalexpo-vps.tech</title>
+    <style>
+        :root {
+            --primary: #2A5B8C;
+            --primary-dark: #1E4469;
+            --primary-light: #3A7BC8;
+            --secondary: #13C2C2;
+            --accent: #FA8C16;
+            --dark: #151617;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --light-gray: #E9ECEF;
+            --white: #FFFFFF;
+            --border-radius: 16px;
+            --border-radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f7fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .email-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            padding: 30px;
+            text-align: center;
+        }
+
+        .email-logo {
+            height: 40px;
+            margin-bottom: 15px;
+        }
+
+        .email-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .email-subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .email-body {
+            padding: 40px;
+        }
+
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .code-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9ff;
+            border-radius: var(--border-radius);
+            border: 2px dashed var(--primary-light);
+        }
+
+        .code-label {
+            font-size: 14px;
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .verification-code {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: 8px;
+            margin: 15px 0;
+            padding: 10px;
+            background: var(--white);
+            border-radius: var(--border-radius-sm);
+            display: inline-block;
+            min-width: 280px;
+            text-align: center;
+            border: 2px solid var(--light-gray);
+        }
+
+        .code-hint {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 10px;
+            line-height: 1.4;
+        }
+
+        .instructions {
+            background: var(--light);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin: 25px 0;
+        }
+
+        .instructions-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 12px;
+        }
+
+        .instructions-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instructions-list li {
+            padding: 8px 0;
+            padding-left: 24px;
+            position: relative;
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .instructions-list li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+
+        .security-notice {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: var(--border-radius-sm);
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .security-notice p {
+            color: #856404;
+            font-size: 13px;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .action-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 91, 140, 0.3);
+        }
+
+        .email-footer {
+            background: var(--light);
+            padding: 25px;
+            text-align: center;
+            border-top: 1px solid var(--light-gray);
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: var(--gray);
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .contact-info {
+            font-size: 12px;
+            color: var(--gray);
+            margin: 15px 0;
+        }
+
+        .contact-info a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .social-links {
+            margin: 20px 0;
+        }
+
+        .social-link {
+            display: inline-block;
+            margin: 0 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .copyright {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 15px;
+            opacity: 0.7;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--light-gray);
+            margin: 25px 0;
+        }
+
+        .urgency-badge {
+            display: inline-block;
+            background: #dc3545;
+            color: var(--white);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .expiry-timer {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a52);
+            color: var(--white);
+            padding: 12px 20px;
+            border-radius: var(--border-radius-sm);
+            text-align: center;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        @media (max-width: 480px) {
+            .email-body {
+                padding: 25px;
+            }
+
+            .email-header {
+                padding: 25px 20px;
+            }
+
+            .verification-code {
+                font-size: 32px;
+                letter-spacing: 6px;
+                min-width: 240px;
+                padding: 8px;
+            }
+
+            .code-section {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .action-button {
+                width: 100%;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Заголовок письма -->
+        <div class="email-header">
+            <img src="https://globalexpo-vps.tech/logo1.png" alt="Globalexpo-vps.tech" class="email-logo">
+            <h1 class="email-title">Код подтверждения</h1>
+            <p class="email-subtitle">Восстановление пароля</p>
+        </div>
+
+        <!-- Основное содержимое письма -->
+        <div class="email-body">
+            <!-- Приветствие -->
+            <div class="greeting">
+                <p>Здравствуйте!</p>
+                <p>Мы получили запрос на восстановление пароля для вашей учетной записи.</p>
+            </div>
+
+            <!-- Секция с кодом -->
+            <div class="code-section">
+                <div class="code-label">Ваш код подтверждения:</div>
+                <div class="verification-code" id="verificationCode">{{ code }}</div>
+                <div class="code-hint">
+                    Введите этот код в форме восстановления пароля на сайте<br>
+                    для подтверждения вашей личности
+                </div>
+            </div>
+
+            <!-- Уведомление безопасности -->
+            <div class="security-notice">
+                <p>⚠️ Никому не сообщайте этот код! Сотрудники Globalexpo-vps.tech никогда не запрашивают коды подтверждения.</p>
+            </div>
+
+            <!-- Инструкции -->
+            <div class="instructions">
+                <h3 class="instructions-title">Что делать дальше:</h3>
+                <ul class="instructions-list">
+                    <li>Вернитесь на страницу восстановления пароля</li>
+                    <li>Введите полученный код в соответствующее поле</li>
+                    <li>Создайте новый надежный пароль</li>
+                    <li>Войдите в систему с новым паролем</li>
+                </ul>
+            </div>
+
+            <div class="divider"></div>
+        </div>
+
+        <!-- Подвал письма -->
+        <div class="email-footer">
+            <div class="footer-text">
+                Если вы не запрашивали восстановление пароля, проигнорируйте это письмо.<br>
+                Ваш пароль останется без изменений.
+            </div>
+
+            <div class="contact-info">
+                По всем вопросам обращайтесь:
+                <a href="mailto:support@globalexpo-vps.tech">support@globalexpo-vps.tech</a>
+            </div>
+
+
+            <div class="copyright">
+                © 2024 Globalexpo-vps.tech. Все права защищены.<br>
+                Это письмо отправлено автоматически, пожалуйста, не отвечайте на него.
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        // Функция для копирования кода (если письмо открыто в браузере)
+        function copyCode() {
+            const code = document.getElementById('verificationCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Код скопирован в буфер обмена!');
+            });
+        }
+
+        // Добавляем возможность копирования по клику (опционально)
+        document.getElementById('verificationCode').addEventListener('click', copyCode);
+        document.getElementById('verificationCode').style.cursor = 'pointer';
+        document.getElementById('verificationCode').title = 'Нажмите для копирования кода';
+    </script>
+</body>
+</html>

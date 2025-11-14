@@ -1,0 +1,1635 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Globalexpo-vps.tech - Конфигуратор серверов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2A5B8C;
+            --primary-dark: #1E4469;
+            --primary-light: #3A7BC8;
+            --secondary: #13C2C2;
+            --accent: #FA8C16;
+            --dark: #151617;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --light-gray: #E9ECEF;
+            --white: #FFFFFF;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --transition: all 0.3s ease;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            --border-radius: 16px;
+            --border-radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            height: 40px;
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .header-btn {
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 2px solid transparent;
+        }
+
+        .header-btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .header-btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .header-btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+            box-shadow: 0 2px 8px rgba(42, 91, 140, 0.3);
+        }
+
+        .header-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.4);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            padding: 0.5rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 300px;
+            height: 100%;
+            background: var(--white);
+            z-index: 1100;
+            transition: var(--transition);
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .mobile-menu.active {
+            right: 0;
+        }
+
+        .mobile-menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .mobile-menu-logo {
+            height: 35px;
+        }
+
+        .mobile-menu-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            padding: 0.5rem;
+        }
+
+        .mobile-nav {
+            list-style: none;
+            margin-bottom: auto;
+        }
+
+        .mobile-nav-item {
+            margin-bottom: 1rem;
+        }
+
+        .mobile-nav-link {
+            display: block;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+            transition: var(--transition);
+        }
+
+        .mobile-nav-link:hover,
+        .mobile-nav-link.active {
+            color: var(--primary);
+        }
+
+        .mobile-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1050;
+            display: none;
+        }
+
+        .mobile-overlay.active {
+            display: block;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        .section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 800;
+            color: var(--dark);
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--gray);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Calculator Styles */
+        .calculator-section {
+            padding: 2rem 0 5rem;
+            flex: 1;
+        }
+
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2.5rem;
+            align-items: start;
+        }
+
+        @media (max-width: 968px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calculator-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .calculator-header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .calculator-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+        }
+
+        .calculator-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .calculator-subtitle {
+            opacity: 0.9;
+            position: relative;
+        }
+
+        .calculator-body {
+            padding: 2.5rem;
+        }
+
+        .config-step {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .config-step:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .step-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .step-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 0.9rem;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-card {
+            background: var(--light);
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: var(--transition);
+        }
+
+        .option-card:hover {
+            border-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .option-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .option-card.selected {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, var(--white) 0%, #f0f7ff 100%);
+            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.1);
+        }
+
+        .option-card.selected::before {
+            transform: scaleX(1);
+            background: var(--secondary);
+        }
+
+        .option-icon {
+            font-size: 1.75rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .option-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+
+        .option-desc {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .slider-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .slider-label {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .slider-value {
+            font-weight: 700;
+            color: var(--primary);
+            background: var(--light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--light-gray);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            background: var(--primary-dark);
+            transform: scale(1.1);
+        }
+
+        .slider-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            color: var(--gray);
+            font-size: 0.85rem;
+        }
+
+        /* Summary Panel */
+        .summary-panel {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .summary-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .summary-header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .summary-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .summary-body {
+            padding: 2rem;
+        }
+
+        .price-display {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .price-period {
+            color: var(--gray);
+            font-size: 1rem;
+        }
+
+        .price-hourly {
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .config-summary {
+            margin-bottom: 2rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--gray);
+        }
+
+        .summary-value {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 1rem;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: var(--white);
+            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(42, 91, 140, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, .3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: var(--white);
+            border-left: 4px solid var(--secondary);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--border-radius-sm);
+            padding: 1rem 1.5rem;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 350px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            border-left-color: #e74c3c;
+        }
+
+        .notification.success {
+            border-left-color: #2ecc71;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+
+        .notification-message {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(19, 194, 194, 0.1);
+            color: var(--secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 1rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            margin-top: auto;
+        }
+
+        .footer-main {
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-logo {
+            height: 40px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        .footer-heading {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
+            display: block;
+            color: #aaa;
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-link:hover {
+            color: var(--white);
+            transform: translateX(5px);
+        }
+
+        .footer-link i {
+            width: 16px;
+            text-align: center;
+        }
+
+        .footer-bottom {
+            padding: 2rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-copyright {
+            color: #aaa;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-policy {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-policy-link {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .footer-policy-link:hover {
+            color: var(--white);
+        }
+
+        .payment-methods {
+            margin-top: 1.5rem;
+        }
+
+        .payment-methods img {
+            max-width: 250px;
+            opacity: 0.8;
+            transition: var(--transition);
+        }
+
+        .payment-methods img:hover {
+            opacity: 1;
+        }
+
+        .footer-contact {
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #aaa;
+        }
+
+        .contact-item i {
+            color: var(--secondary);
+            width: 16px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #aaa;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .social-link:hover {
+            background: var(--primary);
+            color: var(--white);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu, .header-actions {
+                display: none;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .section {
+                padding: 3rem 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .calculator-body {
+                padding: 1.5rem;
+            }
+
+            .option-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+
+            .price-amount {
+                font-size: 2.5rem;
+            }
+
+            .header-container {
+                padding: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .footer-description {
+                margin: 0 auto 1.5rem;
+            }
+
+            .footer-policy {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .calculator-body {
+                padding: 1rem;
+            }
+
+            .option-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-main {
+                padding: 3rem 0 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Header -->
+<header>
+    <div class="header-container">
+        <a href="{% url 'index' %}" class="logo-link">
+            <img src="{% static 'image/logo.png' %}" alt="Globalexpo-vps.tech" class="logo">
+        </a>
+
+        <nav>
+            <ul class="nav-menu">
+                <li><a href="{% url 'index' %}" class="nav-link">Главная</a></li>
+                <li><a href="{% url 'gpu_servers' %}" class="nav-link">GPU Серверы</a></li>
+                <li><a href="{% url 'servers' %}" class="nav-link">VStack Облако</a></li>
+                <li><a href="{% url 'configurator' %}" class="nav-link active">Конфигуратор</a></li>
+                <li><a href="{% url 'about_us' %}" class="nav-link">О компании</a></li>
+            </ul>
+        </nav>
+
+        <div class="header-actions">
+            <a href="{% url 'contacts' %}" class="header-btn header-btn-outline">Контакты</a>
+            <a href="{% url 'profile' %}" class="header-btn header-btn-primary">
+                <i class="fas fa-user"></i>
+                Личный кабинет
+            </a>
+        </div>
+
+        <button class="mobile-toggle" id="mobileToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+    </div>
+</header>
+
+<!-- Mobile Menu -->
+<div class="mobile-overlay" id="mobileOverlay"></div>
+<div class="mobile-menu" id="mobileMenu">
+    <div class="mobile-menu-header">
+        <img src="{% static 'image/logo.png' %}" alt="Globalexpo-vps.tech" class="mobile-menu-logo">
+        <button class="mobile-menu-close" id="mobileMenuClose">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <ul class="mobile-nav">
+        <li class="mobile-nav-item">
+            <a href="{% url 'index' %}" class="mobile-nav-link">Главная</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="{% url 'gpu_servers' %}" class="mobile-nav-link">GPU Серверы</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="{% url 'servers' %}" class="mobile-nav-link">VStack Облако</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="{% url 'configurator' %}" class="mobile-nav-link active">Конфигуратор</a>
+        </li>
+        <li class="mobile-nav-item">
+            <a href="{% url 'about_us' %}" class="mobile-nav-link">О компании</a>
+        </li>
+    </ul>
+
+    <div class="mobile-actions">
+        <a href="{% url 'contacts' %}" class="btn btn-outline">Контакты</a>
+        <a href="{% url 'profile' %}" class="btn btn-primary">
+            <i class="fas fa-user"></i>
+            Личный кабинет
+        </a>
+    </div>
+</div>
+
+<div class="notification" id="notification">
+    <div class="notification-title" id="notificationTitle">Уведомление</div>
+    <div class="notification-message" id="notificationMessage">Сообщение</div>
+</div>
+
+<section class="section calculator-section">
+    <div class="container">
+        <h2 class="section-title">Конфигуратор серверов</h2>
+        <p class="section-subtitle">Соберите идеальную конфигурацию под ваши задачи. Все цены обновляются в реальном
+            времени.</p>
+
+        <div class="calculator-container">
+            <!-- Configuration Panel -->
+            <div class="calculator-card">
+                <div class="calculator-header">
+                    <h3 class="calculator-title">Настройте ваш сервер</h3>
+                    <p class="calculator-subtitle">Выберите параметры и сразу увидите стоимость</p>
+                </div>
+                <div class="calculator-body">
+                    <!-- Location Step -->
+                    <div class="config-step">
+                        <div class="step-title">
+                            <div class="step-icon">1</div>
+                            <span>Выберите локацию</span>
+                        </div>
+                        <div class="option-grid" id="locationOptions">
+                            <!-- Locations will be loaded here -->
+                            <div class="option-card loading-card">
+                                <div class="loading"></div>
+                                <div class="option-name">Загрузка...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- OS Step -->
+                    <div class="config-step">
+                        <div class="step-title">
+                            <div class="step-icon">2</div>
+                            <span>Операционная система</span>
+                        </div>
+                        <div class="option-grid">
+                            <div class="option-card" data-os="Ubuntu-24.04.2-X64">
+                                <div class="option-icon">
+                                    <i class="fab fa-ubuntu"></i>
+                                </div>
+                                <div class="option-name">Linux</div>
+                                <div class="option-desc">Ubuntu-24.04.2-X64</div>
+                            </div>
+                            <div class="option-card" data-os="Windows-Server 2019-X64">
+                                <div class="option-icon">
+                                    <i class="fab fa-windows"></i>
+                                </div>
+                                <div class="option-name">Windows</div>
+                                <div class="option-desc">Server 2019-X64</div>
+                            </div>
+                            <div class="option-card" data-os="Windows-Server 2022-X64">
+                                <div class="option-icon">
+                                    <i class="fab fa-windows"></i>
+                                </div>
+                                <div class="option-name">windows</div>
+                                <div class="option-desc">Server 2022-X64</div>
+                            </div>
+                            <div class="option-card" data-os="Debian-11.6-X64">
+                                <div class="option-icon">
+                                    <i class="fab fa-linux"></i>
+                                </div>
+                                <div class="option-name">linux</div>
+                                <div class="option-desc">Debian-11.6-X64</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CPU Step -->
+                    <div class="config-step">
+                        <div class="step-title">
+                            <div class="step-icon">3</div>
+                            <span>Процессор (CPU)</span>
+                        </div>
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <span class="slider-label">Количество ядер</span>
+                                <span class="slider-value" id="cpuValue">2 ядра</span>
+                            </div>
+                            <input type="range" min="1" max="32" value="2" class="slider" id="cpuSlider">
+                            <div class="slider-controls">
+                                <span>1 ядро</span>
+                                <span id="MaxCPU">32 ядра</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RAM Step -->
+                    <div class="config-step">
+                        <div class="step-title">
+                            <div class="step-icon">4</div>
+                            <span>Оперативная память (RAM)</span>
+                        </div>
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <span class="slider-label">Объем памяти</span>
+                                <span class="slider-value" id="ramValue">4 ГБ</span>
+                            </div>
+                            <input type="range" min="1" max="64" value="4" class="slider" id="ramSlider">
+                            <div class="slider-controls">
+                                <span>1 ГБ</span>
+                                <span id="MaxRAM">64 ГБ</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Step -->
+                    <div class="config-step">
+                        <div class="step-title">
+                            <div class="step-icon">5</div>
+                            <span>Дисковое пространство</span>
+                        </div>
+                        <div class="slider-container">
+                            <div class="slider-header">
+                                <span class="slider-label">Размер диска</span>
+                                <span class="slider-value" id="storageValue">50 ГБ</span>
+                            </div>
+                            <input type="range" min="1" max="100" value="5" class="slider" id="storageSlider">
+                            <div class="slider-controls">
+                                <span>10 ГБ</span>
+                                <span id="HardGB">1000 ГБ</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Summary Panel -->
+            <div class="summary-panel">
+                <div class="summary-card">
+                    <div class="summary-header">
+                        <h3 class="summary-title">Ваша конфигурация</h3>
+                    </div>
+                    <div class="summary-body">
+                        <div class="price-display">
+                            <div class="price-amount" id="totalPrice">—</div>
+                            <div class="price-period">в месяц</div>
+                            <div class="price-hourly" id="hourlyPrice">— в час</div>
+                        </div>
+
+                        <div class="config-summary">
+                            <div class="summary-item">
+                                <span class="summary-label">Локация:</span>
+                                <span class="summary-value" id="summaryLocation">—</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">ОС:</span>
+                                <span class="summary-value" id="summaryOS">—</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">CPU:</span>
+                                <span class="summary-value" id="summaryCPU">—</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">RAM:</span>
+                                <span class="summary-value" id="summaryRAM">—</span>
+                            </div>
+                            <div class="summary-item">
+                                <span class="summary-label">Хранилище:</span>
+                                <span class="summary-value" id="summaryStorage">—</span>
+                            </div>
+                        </div>
+
+                        <div class="feature-badge">
+                            <i class="fas fa-infinity"></i>
+                            <span>Безлимитный трафик</span>
+                        </div>
+
+                        <button class="btn btn-primary" id="orderBtn" disabled>
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Заказать сервер</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-main">
+            <div class="footer-content">
+                <div class="footer-about">
+                    <img src="{% static 'image/logo.png' %}" alt="Globalexpo-vps.tech" class="footer-logo">
+                    <p class="footer-description">
+                        Ведущий облачный провайдер, предоставляющий современные IT-решения
+                        для бизнеса любого масштаба с 2024 года.
+                    </p>
+                    <div class="payment-methods">
+                        <img src="{% static 'image/visa_master_mir_union.png' %}" alt="Принимаемые платежные системы">
+                    </div>
+                </div>
+
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Услуги</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="{% url 'gpu_servers' %}" class="footer-link">
+                                <i class="fas fa-microchip"></i>
+                                Аренда GPU серверов
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'servers' %}" class="footer-link">
+                                <i class="fas fa-cloud"></i>
+                                Частное облако VStack
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'configurator' %}" class="footer-link">
+                                <i class="fas fa-cogs"></i>
+                                Конфигуратор серверов
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Компания</h3>
+                    <ul class="footer-links">
+                        <li>
+                            <a href="{% url 'about_us' %}" class="footer-link">
+                                <i class="fas fa-info-circle"></i>
+                                О компании
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contacts' %}" class="footer-link">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Контакты
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'profile' %}" class="footer-link">
+                                <i class="fas fa-user"></i>
+                                Личный кабинет
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="footer-links-container">
+                    <h3 class="footer-heading">Контакты</h3>
+                    <div class="footer-contact">
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <span>globalexpo.kg@gmail.com</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <span>+7 (993) 979-13-34</span>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Круглосуточная поддержка</span>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link">
+                            <i class="fab fa-telegram"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-vk"></i>
+                        </a>
+                        <a href="#" class="social-link">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="footer-copyright">
+                © 2024 – 2025 globalexpo-vps.tech. Все права защищены.
+            </div>
+            <div class="footer-policy">
+                <a href="{% url 'privacy_policy' %}" class="footer-policy-link">Политика конфиденциальности</a>
+                <a href="{% url 'ofert' %}" class="footer-policy-link">Публичная оферта</a>
+                <a href="{% url 'conditions' %}" class="footer-policy-link">Условия оплаты</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Mobile Menu Functionality
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuClose = document.getElementById('mobileMenuClose');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+
+    mobileToggle.addEventListener('click', () => {
+        mobileMenu.classList.add('active');
+        mobileOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    });
+
+    mobileMenuClose.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    mobileOverlay.addEventListener('click', () => {
+        mobileMenu.classList.remove('active');
+        mobileOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    // Global state
+    let currentConfig = {
+        location: null,
+        os: null,
+        cpu: 2,
+        ram: 4096, // 4GB in MB
+        storage: 51200 // 50GB in MB
+    };
+
+    let locations = [];
+    let isLoading = false;
+
+    // DOM Elements
+    const locationOptions = document.getElementById('locationOptions');
+    const cpuSlider = document.getElementById('cpuSlider');
+    const ramSlider = document.getElementById('ramSlider');
+    const storageSlider = document.getElementById('storageSlider');
+    const cpuValue = document.getElementById('cpuValue');
+    const ramValue = document.getElementById('ramValue');
+    const storageValue = document.getElementById('storageValue');
+    const totalPrice = document.getElementById('totalPrice');
+    const hourlyPrice = document.getElementById('hourlyPrice');
+    const summaryLocation = document.getElementById('summaryLocation');
+    const summaryOS = document.getElementById('summaryOS');
+    const summaryCPU = document.getElementById('summaryCPU');
+    const summaryRAM = document.getElementById('summaryRAM');
+    const summaryStorage = document.getElementById('summaryStorage');
+    const orderBtn = document.getElementById('orderBtn');
+    const notification = document.getElementById('notification');
+    const notificationTitle = document.getElementById('notificationTitle');
+    const notificationMessage = document.getElementById('notificationMessage');
+
+    // Initialize the calculator
+    document.addEventListener('DOMContentLoaded', function () {
+        loadLocations();
+        setupEventListeners();
+        updateSummary();
+    });
+
+    // Setup event listeners
+    function setupEventListeners() {
+        // OS selection
+        document.querySelectorAll('.option-card[data-os]').forEach(card => {
+            card.addEventListener('click', function () {
+                document.querySelectorAll('.option-card[data-os]').forEach(c => c.classList.remove('selected'));
+                this.classList.add('selected');
+                currentConfig.os = this.dataset.os;
+                updateSummary();
+                calculatePrice();
+            });
+        });
+
+        // CPU slider
+        cpuSlider.addEventListener('input', function () {
+            currentConfig.cpu = parseInt(this.value);
+            cpuValue.textContent = `${currentConfig.cpu} ${getRussianWord(currentConfig.cpu, 'ядро', 'ядра', 'ядер')}`;
+            updateSummary();
+            calculatePrice();
+        });
+
+        // RAM slider
+        ramSlider.addEventListener('input', function () {
+            const ramGB = parseInt(this.value);
+            currentConfig.ram = ramGB * 1024; // Convert to MB
+            ramValue.textContent = `${ramGB} ГБ`;
+            updateSummary();
+            calculatePrice();
+        });
+
+        // Storage slider
+        storageSlider.addEventListener('input', function () {
+            const storageGB = parseInt(this.value) * 10; // 10GB steps
+            currentConfig.storage = storageGB * 1024; // Convert to MB
+            storageValue.textContent = `${storageGB} ГБ`;
+            updateSummary();
+            calculatePrice();
+        });
+
+        // Order button
+        orderBtn.addEventListener('click', async function () {
+            {% if request.user.is_authenticated %}
+                const requestBody = {
+                    location_id: currentConfig.location.id,
+                    image_id: currentConfig.os,
+                    cpu: currentConfig.cpu,
+                    ram_mb: currentConfig.ram,
+                    volumes: [
+                        {
+                            name: "boot",
+                            size_mb: currentConfig.storage
+                        }
+                    ]
+                };
+
+                const response = await fetch(`{% url 'buy_server' %}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(requestBody)
+                });
+
+                if (response.status === 200) {
+                    showNotification('Заказ принят!', 'Ваш сервер будет настроен в течение 15 минут и отобразится в вашем профиле.', 'success');
+                } else if (response.status === 402) {
+                    showNotification('Заказ не оформлен', 'На вашем балансе не хватает средств', 'error');
+            } else if (response.status === 400) {
+                    showNotification('Заказ не оформлен', 'Неверная конфигурация сервера, попробуйте изменить конфигурацию', 'error');
+                } else {
+                    showNotification('Заказ не оформлен', 'Произошла непредвиденная ошибка, повторите попытку позже', 'error');
+                }
+            {% else %}
+                window.location.href = '{% url 'profile' %}'
+            {% endif %}
+        });
+    }
+    }
+
+    // Load locations from API
+    async function loadLocations() {
+        try {
+            showLoadingState();
+
+            const response = await fetch(`{% url 'get_locations'%}`, {});
+
+            if (!response.ok) {
+                throw new Error(`Недоступный параметр конфигов`);
+            }
+
+            const data = await response.json();
+            locations = data.locations || [];
+
+            renderLocations();
+
+        } catch (error) {
+            console.error('Error loading locations:', error);
+            showNotification('Ошибка', 'Не удалось загрузить список локаций', 'error');
+            renderErrorState();
+        }
+    }
+
+    // Render locations to the UI
+    function renderLocations() {
+        locationOptions.innerHTML = '';
+
+        locations.forEach(location => {
+            const locationCard = document.createElement('div');
+            locationCard.className = 'option-card';
+            locationCard.innerHTML = `
+                    <div class="option-icon">
+                        <i class="fas fa-server"></i>
+                    </div>
+                    <div class="option-name">${getLocationName(location.id)}</div>
+                    <div class="option-desc">До ${Math.max(...location.cpu_quantity_options)} ядер</div>
+                `;
+
+            locationCard.addEventListener('click', () => selectLocation(location));
+            locationOptions.appendChild(locationCard);
+        });
+    }
+
+    // Render error state
+    function renderErrorState() {
+        locationOptions.innerHTML = `
+                <div class="option-card" style="grid-column: 1 / -1;">
+                    <div class="option-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="option-name">Ошибка загрузки</div>
+                    <div class="option-desc">Попробуйте обновить страницу</div>
+                </div>
+            `;
+    }
+
+    // Show loading state
+    function showLoadingState() {
+        locationOptions.innerHTML = `
+                <div class="option-card loading-card" style="grid-column: 1 / -1;">
+                    <div class="loading"></div>
+                    <div class="option-name">Загрузка локаций...</div>
+                </div>
+            `;
+    }
+
+    // Select a location
+    function selectLocation(location) {
+        currentConfig.location = location;
+
+        // Update UI
+        document.querySelectorAll('#locationOptions .option-card').forEach(card => {
+            card.classList.remove('selected');
+        });
+        event.target.closest('.option-card').classList.add('selected');
+
+        // Update sliders based on location constraints
+        updateSlidersForLocation(location);
+        updateSummary();
+        calculatePrice();
+    }
+
+    // Update sliders based on location constraints
+    function updateSlidersForLocation(location) {
+        // CPU slider
+        const maxCPU = Math.max(...location.cpu_quantity_options);
+        cpuSlider.max = maxCPU;
+        cpuSlider.value = Math.min(currentConfig.cpu, maxCPU);
+        cpuValue.textContent = `${cpuSlider.value} ${getRussianWord(cpuSlider.value, 'ядро', 'ядра', 'ядер')}`;
+        currentConfig.cpu = parseInt(cpuSlider.value);
+
+        // RAM slider
+        const ramOptions = location.ram_size_options;
+        const maxRAM = Math.max(...ramOptions) / 1024; // Convert to GB
+        ramSlider.max = Math.min(64, maxRAM);
+        ramSlider.value = Math.min(parseInt(ramSlider.value), ramSlider.max);
+        ramValue.textContent = `${ramSlider.value} ГБ`;
+        currentConfig.ram = parseInt(ramSlider.value) * 1024;
+
+        // Storage slider
+        const maxStorage = location.volume_max / 1024; // Convert to GB
+        storageSlider.max = Math.min(100, Math.floor(maxStorage / 10));
+        storageSlider.value = Math.min(parseInt(storageSlider.value), storageSlider.max);
+        storageValue.textContent = `${storageSlider.value * 10} ГБ`;
+        currentConfig.storage = parseInt(storageSlider.value) * 10 * 1024;
+
+        document.getElementById('HardGB').textContent = `${storageSlider.max * 10} ГБ`;
+    }
+
+    // Calculate price using API
+    async function calculatePrice() {
+        if (!currentConfig.location || !currentConfig.os || isLoading) return;
+
+        isLoading = true;
+        orderBtn.disabled = true;
+        orderBtn.innerHTML = '<div class="loading"></div><span>Расчет...</span>';
+
+        try {
+            const requestBody = {
+                location_id: currentConfig.location.id,
+                image_id: currentConfig.os,
+                cpu: currentConfig.cpu,
+                ram_mb: currentConfig.ram,
+                volumes: [
+                    {
+                        name: "boot",
+                        size_mb: currentConfig.storage
+                    }
+                ]
+            };
+
+            const response = await fetch(`{% url 'get_price'%}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Update price display
+            if (data.price) {
+                const monthlyPrice = Math.round(data.price);
+                const hourlyPrice = (monthlyPrice / 720).toFixed(2);
+
+                totalPrice.textContent = `${monthlyPrice} ₽`;
+                hourlyPrice.textContent = `${hourlyPrice} ₽/час`;
+
+                orderBtn.disabled = false;
+                orderBtn.innerHTML = '<i class="fas fa-shopping-cart"></i><span>Заказать сервер</span>';
+            } else {
+                throw new Error('Invalid price data');
+            }
+        } catch (error) {
+            console.error('Error calculating price:', error);
+            totalPrice.textContent = '—';
+            hourlyPrice.textContent = '— в час';
+            orderBtn.disabled = true;
+            orderBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Ошибка расчета, недоступная конфигурация сервера</span>';
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    // Update summary panel
+    function updateSummary() {
+        summaryLocation.textContent = currentConfig.location ? getLocationName(currentConfig.location.id) : '—';
+        summaryOS.textContent = currentConfig.os ? (currentConfig.os) : '—';
+        summaryCPU.textContent = `${currentConfig.cpu} ${getRussianWord(currentConfig.cpu, 'ядро', 'ядра', 'ядер')}`;
+        summaryRAM.textContent = `${Math.round(currentConfig.ram / 1024)} ГБ`;
+        summaryStorage.textContent = `${Math.round(currentConfig.storage / 1024)} ГБ`;
+        orderBtn.disabled = !currentConfig.location || !currentConfig.os;
+    }
+
+    // Helper function to get location name
+    function getLocationName(locationId) {
+        const locationNames = {
+            'ix1': 'Москва, 2nd Gen Intel',
+            'ds1': 'Москва, 5th Gen Intel',
+            'kz': 'Алматы',
+            'uae': 'Дубай',
+            'am2': 'Амстердам',
+            'ca': 'Торонто',
+            'nj3': 'Нью-Джерси',
+            'br': 'Сан-Паулу'
+        };
+
+        return locationNames[locationId] || locationId;
+    }
+
+    // Helper function for Russian word forms
+    function getRussianWord(number, one, two, five) {
+        number = Math.abs(number) % 100;
+        const n1 = number % 10;
+
+        if (number > 10 && number < 20) return five;
+        if (n1 > 1 && n1 < 5) return two;
+        if (n1 === 1) return one;
+        return five;
+    }
+
+    // Show notification
+    function showNotification(title, message, type = 'info') {
+        notification.className = `
+        notification ${type}`;
+        notificationTitle.textContent = title;
+        notificationMessage.textContent = message;
+        notification.classList.add('show');
+
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 5000);
+    }
+</script>
+</body>
+</html>
