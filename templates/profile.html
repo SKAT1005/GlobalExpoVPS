@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Личный кабинет - Globalexpo-vps.tech</title>
@@ -119,6 +120,48 @@
             display: flex;
             gap: 1rem;
             align-items: center;
+        }
+
+        /* NEW: User Balance Section */
+        .user-balance {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--light-gray);
+        }
+
+        .balance-amount {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+
+        .balance-label {
+            font-size: 0.85rem;
+            color: var(--gray);
+        }
+
+        .top-up-btn {
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .top-up-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.3);
         }
 
         .header-btn {
@@ -259,7 +302,7 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 2rem;
+            padding: 0 1.5rem;
         }
 
         .main-about {
@@ -361,6 +404,77 @@
 
         .form-switch button:hover {
             color: var(--primary-dark);
+        }
+
+        /* NEW: Two-step registration */
+        .registration-step {
+            display: none;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .registration-step.active {
+            display: block;
+        }
+
+        .step-indicator {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 100px;
+        }
+
+        .step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 70px;
+            width: 60px;
+            height: 2px;
+            background: var(--light-gray);
+        }
+
+        .step.active:not(:last-child)::after {
+            background: var(--primary);
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--light-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--white);
+            transition: var(--transition);
+        }
+
+        .step.active .step-circle {
+            background: var(--primary);
+        }
+
+        .step.completed .step-circle {
+            background: var(--secondary);
+        }
+
+        .step-label {
+            font-size: 12px;
+            color: var(--gray);
+            text-align: center;
+        }
+
+        .step.active .step-label {
+            color: var(--primary);
+            font-weight: 500;
         }
 
         /* Password Recovery Styles */
@@ -544,6 +658,78 @@
         #logoutBtn:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+        }
+
+        /* NEW: Balance History */
+        .balance-history {
+            margin-top: 30px;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 20px;
+        }
+
+        .balance-history h3 {
+            margin: 0 0 15px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .history-date {
+            font-size: 14px;
+            color: var(--gray);
+        }
+
+        .history-amount {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .history-amount.positive {
+            color: #28a745;
+        }
+
+        .history-status {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
         }
 
         /* Modal styles */
@@ -940,6 +1126,17 @@
             .recovery-actions {
                 flex-direction: column;
             }
+
+            /* NEW: Mobile adjustments for balance section */
+            .user-balance {
+                flex-direction: column;
+                gap: 0.5rem;
+                padding: 0.75rem;
+            }
+
+            .balance-info {
+                text-align: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -954,6 +1151,11 @@
 
             .modal-body {
                 padding: 20px;
+            }
+
+            #profile {
+                width: auto;
+                margin: 0 10px;
             }
         }
     </style>
@@ -977,6 +1179,20 @@
         </nav>
 
         <div class="header-actions">
+            <!-- NEW: User Balance Section -->
+            {% if request.user.is_authenticated %}
+                <div class="user-balance">
+                    <div class="balance-info">
+                        <div class="balance-label">Баланс</div>
+                        <div class="balance-amount">{{ user.balance|default:"0" }} ₽</div>
+                    </div>
+                    <button class="top-up-btn" id="headerTopUpBtn">
+                        <i class="fas fa-plus"></i>
+                        Пополнить
+                    </button>
+                </div>
+            {% endif %}
+
             <a href="{% url 'contacts' %}" class="header-btn header-btn-outline">Контакты</a>
             <a href="{% url 'profile' %}" class="header-btn header-btn-primary">
                 <i class="fas fa-user"></i>
@@ -1087,246 +1303,293 @@
     <div class="page">
         <div class="container">
             <div class="main-about">
-                <div class="main-about__col">
-                    {% if not request.user.is_authenticated %}
-                        <div id="authForms">
-                            <!-- Форма входа -->
-                            <form id="loginForm" method="post" {% if registraion %}style="display: none;"{% endif %}>
-                                {% csrf_token %}
-                                <h3>Вход в аккаунт</h3>
-                                <input type="email" id="loginEmail" name="email" placeholder="Email" required>
-                                <input type="password" id="loginPassword" name="password" placeholder="Пароль" required>
-                                <button type="submit" class="auth-btn" name="login">Войти</button>
-                                {% for error in errors %}
-                                    <div class="recovery-message">{{ error }}</div> {% endfor %}
-                                <div class="form-switch">
-                                    Нет аккаунта?
-                                    <button type="button" onclick="showRegisterForm()">Зарегистрироваться</button>
-                                    <div style="margin-top: 10px;">
-                                        <button type="button" onclick="showRecoveryForm()"
-                                                style="background: none; border: none; color: var(--primary); text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px;">
-                                            Забыли пароль?
-                                        </button>
-                                    </div>
+                {% if not request.user.is_authenticated %}
+                    <div id="authForms">
+                        <!-- Форма входа -->
+                        <form id="loginForm" method="post" {% if registration %}style="display: none;"{% endif %}>
+                            {% csrf_token %}
+                            <h3>Вход в аккаунт</h3>
+                            <input type="email" id="loginEmail" name="email" placeholder="Email" required>
+                            <input type="password" id="loginPassword" name="password" placeholder="Пароль" required>
+                            <button type="submit" class="auth-btn" name="login">Войти</button>
+                            {% for error in errors %}
+                                <div class="recovery-message">{{ error }}</div> {% endfor %}
+                            <div class="form-switch">
+                                Нет аккаунта?
+                                <button type="button" onclick="showRegisterForm()">Зарегистрироваться</button>
+                                <div style="margin-top: 10px;">
+                                    <button type="button" onclick="showRecoveryForm()"
+                                            style="background: none; border: none; color: var(--primary); text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px;">
+                                        Забыли пароль?
+                                    </button>
                                 </div>
-                            </form>
+                            </div>
+                        </form>
 
-                            <!-- Форма регистрации -->
-                            <form id="registerForm" method="post"
-                                  {% if not registraion %}style="display: none;"{% endif %}>
-                                {% csrf_token %}
-                                <h3>Регистрация</h3>
+                        <!-- NEW: Two-step registration form -->
+                        <form id="registerForm" method="post"
+                              {% if not registration %}style="display: none;"{% endif %}>
+                            {% csrf_token %}
+                            <h3>Регистрация</h3>
+
+                            <!-- Step indicator -->
+                            <div class="step-indicator">
+                                <div class="step active" id="step1-indicator">
+                                    <div class="step-circle">1</div>
+                                    <div class="step-label">Данные</div>
+                                </div>
+                                <div class="step" id="step2-indicator">
+                                    <div class="step-circle">2</div>
+                                    <div class="step-label">Подтверждение</div>
+                                </div>
+                            </div>
+
+                            <!-- Step 1: Basic info -->
+                            <div class="registration-step active" id="registerStep1">
                                 <input type="text" id="firstName" name="name" placeholder="Имя" required>
                                 <input type="text" id="lastName" name="surname" placeholder="Фамилия" required>
                                 <input type="email" id="regEmail" name="email" placeholder="Email" required>
                                 <input type="tel" id="phone" name="phone" placeholder="Телефон (опционально)">
                                 <input type="password" id="regPassword" name="password"
                                        placeholder="Пароль (мин. 6 символов)" required>
-                                <button type="submit" class="auth-btn" name="registration">Зарегистрироваться</button>
+                                <button type="button" class="auth-btn" onclick="proceedToStep2()">Продолжить
+                                </button>
                                 {% for error in errors %}
                                     <div class="recovery-message">{{ error }}</div> {% endfor %}
                                 <div class="form-switch">
                                     Уже есть аккаунт?
                                     <button type="button" onclick="showLoginForm()">Войти</button>
                                 </div>
-                            </form>
-
-                            <form method="post">
-
-                                {% csrf_token %}
-                                <div id="recoveryForm" style="display: none;">
-                                    <!-- Этап 1: Ввод почты -->
-                                    <div class="recovery-step active" id="step1">
-                                        <h3>Восстановление пароля</h3>
-                                        <p class="recovery-message info">Введите email вашей учетной записи</p>
-                                        <input type="email" id="recoveryEmail" name="email" placeholder="Email"
-                                               required>
-                                        <div class="recovery-actions">
-                                            <button type="button" class="btn-secondary" onclick="showLoginForm()">Назад
-                                            </button>
-                                            <button type="button" class="auth-btn" onclick="startRecovery()">
-                                                Восстановить
-                                                пароль
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Этап 2: Ввод кода -->
-                                    <div class="recovery-step" id="step2">
-                                        <h3>Проверка кода</h3>
-                                        <p class="recovery-message info">На вашу почту отправлен код подтверждения</p>
-                                        <input type="text" id="recoveryCode" placeholder="Введите код из письма"
-                                               required
-                                               maxlength="6">
-                                        <div class="recovery-actions">
-                                            <button type="button" class="btn-secondary" onclick="backToStep1()">Назад
-                                            </button>
-                                            <button type="button" class="auth-btn" onclick="verifyRecoveryCode()">
-                                                Проверить
-                                                код
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Этап 3: Ввод нового пароля -->
-                                    <div class="recovery-step" id="step3">
-                                        <h3>Новый пароль</h3>
-                                        <p class="recovery-message info">Введите новый пароль для вашей учетной
-                                            записи</p>
-                                        <input type="password" id="newPassword" name="password"
-                                               placeholder="Новый пароль" required>
-                                        <div class="password-strength">
-                                            <div class="password-strength-bar"></div>
-                                        </div>
-                                        <p class="password-requirements">Пароль должен содержать минимум 6 символов</p>
-                                        <input type="password" id="confirmPassword" placeholder="Повторите пароль"
-                                               required>
-                                        <div class="recovery-actions">
-                                            <button type="button" class="btn-secondary" onclick="backToStep2()">Назад
-                                            </button>
-                                            <button type="submit" class="auth-btn" name="recovery_password">Сменить
-                                                пароль
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="main-about__col main-about__col--img">
-                            <img src="{% static 'image/contacts.svg' %}" alt="Контакты">
-                        </div>
-                    {% else %}
-                        <div id="profile">
-                            <h2>Ваш профиль</h2>
-                            <div class="profile-info">
-                                <p><strong>Имя:</strong> <span
-                                        id="profileFirstName">{{ user.name|default:"—" }}</span></p>
-                                <p><strong>Фамилия:</strong> <span
-                                        id="profileLastName">{{ user.surname|default:"—" }}</span></p>
-                                <p><strong>Email:</strong> <span id="profileEmail">{{ user.email }}</span></p>
-                                <p><strong>Телефон:</strong> <span
-                                        id="profilePhone">{{ user.phone|default:"Не указан" }}</span></p>
-                                <p><strong>Баланс:</strong> <span
-                                        id="profileBalance">{{ user.balance|default:"0" }}</span>
-                                    ₽</p>
                             </div>
 
-                            <button id="topUpBtn">Пополнить баланс</button>
-                            <button id="logoutBtn">Выйти</button>
-
-                            <!-- Список серверов -->
-                            <div class="servers-section" style="margin-top: 30px;">
-                                <h3 style="margin-bottom: 20px; color: var(--primary);">Ваши серверы</h3>
-                                <div class="servers-list" id="serversList">
-                                    {% for server in servers %}
-                                        <div class="server-card" data-server-id="{{ server.id }}"
-                                             style="background: white; border-radius: var(--border-radius); padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); border-left: 4px solid var(--primary);">
-                                            <div class="server-header"
-                                                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                                <div class="server-name"
-                                                     style="font-size: 18px; font-weight: 600; color: var(--dark);">
-                                                    {{ server.name }}
-                                                </div>
-                                                {% if server.is_power_on %}
-                                                    <div class="server-status"
-                                                         style="display: flex; align-items: center; gap: 12px;">
-                                                        <div class="status-indicator"
-                                                             style="width: 12px; height: 12px; border-radius: 50%; background: #28a745;"></div>
-                                                        <span style="color: #28a745; font-weight: 500;">Включен</span>
-                                                        <button class="toggle-server-btn"
-                                                                data-server-id="{{ server.id }}"
-                                                                data-current-status="on"
-                                                                style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 12px; font-weight: 500; transition: var(--transition);"
-                                                                onclick="toggleServer('{{ server.id }}', 'off')">
-                                                            Выключить
-                                                        </button>
-                                                    </div>
-                                                {% else %}
-                                                    <div class="server-status"
-                                                         style="display: flex; align-items: center; gap: 12px;">
-                                                        <div class="status-indicator"
-                                                             style="width: 12px; height: 12px; border-radius: 50%; background: #dc3545;"></div>
-                                                        <span style="color: #dc3545; font-weight: 500;">Выключен</span>
-                                                        <button class="toggle-server-btn"
-                                                                data-server-id="{{ server.id }}"
-                                                                data-current-status="off"
-                                                                style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 12px; font-weight: 500; transition: var(--transition);"
-                                                                onclick="toggleServer('{{ server.id }}', 'on')">
-                                                            Включить
-                                                        </button>
-                                                    </div>
-                                                {% endif %}
-                                            </div>
-
-                                            <div class="server-specs"
-                                                 style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
-                                                <div class="spec-item">
-                                                    <strong style="color: var(--gray);">Локация:</strong>
-                                                    <span>{{ server.location_id }}</span>
-                                                </div>
-                                                <div class="spec-item">
-                                                    <strong style="color: var(--gray);">ОС:</strong>
-                                                    <span>{{ server.image_id }}</span>
-                                                </div>
-                                                <div class="spec-item">
-                                                    <strong style="color: var(--gray);">Ядра:</strong>
-                                                    <span>{{ server.cpu }}CPU</span>
-                                                </div>
-                                                <div class="spec-item">
-                                                    <strong style="color: var(--gray);">ОЗУ:</strong>
-                                                    <span>{{ server.ram_mb }} GB</span>
-                                                </div>
-                                                <div class="spec-item">
-                                                    <strong style="color: var(--gray);">Диск:</strong>
-                                                    {% for volume in server.volumes %}
-                                                        <span>{{ volume.size_mb }} GB SSD</span>
-                                                    {% endfor %}
-                                                </div>
-                                            </div>
-                                            {% for nics in server.nics %}
-                                                <div class="server-credentials"
-                                                     style="background: var(--light-gray); padding: 15px; border-radius: var(--border-radius-sm); margin-bottom: 15px;">
-                                                    <div class="ip-address">
-                                                        <strong style="color: var(--gray);">IP адрес:</strong>
-                                                        <span onclick="copyToClipboard('{{ nics.ip_address }}')">
-                                {{ nics.ip_address }}
-                            </span>
-                                                    </div>
-                                                    <div class="password"
-                                                         style="display: flex; align-items: center; gap: 10px;">
-                                                        <strong style="color: var(--gray);">Пароль:</strong>
-                                                        <span style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px; flex: 1;"
-                                                              onclick="copyToClipboard('{{ server.password }}')">
-                                ••••••••••
-                            </span>
-                                                    </div>
-                                                    <div class="ip-address" style="margin-bottom: 10px;">
-                                                        <strong style="color: var(--gray);">SSH:</strong>
-                                                        <span style="font-family: monospace; padding: 4px 8px; border-radius: 4px; margin-left: 8px;"
-                                                              onclick="copyToClipboard('ssh root@{{ nics.ip_address }}')">
-                                ssh root@192.168.1.101
-                            </span>
-                                                    </div>
-                                                </div>
-                                            {% endfor %}
-                                            <div class="server-actions"
-                                                 style="display: flex; justify-content: flex-end;">
-                                                <button class="delete-server-btn"
-                                                        style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: var(--border-radius-sm); cursor: pointer; font-weight: 500; transition: var(--transition);"
-                                                        onclick="deleteServer('{{ server.id }}')">
-                                                    Удалить сервер
-                                                </button>
-                                            </div>
-                                        </div>
-                                    {% endfor %}
-
+                            <!-- Step 2: Email confirmation -->
+                            <div class="registration-step" id="registerStep2">
+                                <p class="recovery-message info">На вашу почту отправлен код подтверждения</p>
+                                <input type="text" id="confirmationCode" name="code"
+                                       placeholder="Введите код из письма"
+                                       required maxlength="6">
+                                <div class="recovery-actions">
+                                    <button type="button" class="btn-secondary" onclick="showRegistrationStep(1)">
+                                        Назад
+                                    </button>
+                                    <button type="submit" class="auth-btn" name="registration">Завершить
+                                        регистрацию
+                                    </button>
                                 </div>
                             </div>
+                        </form>
 
+                        <form method="post">
+                            {% csrf_token %}
+                            <div id="recoveryForm" style="display: none;">
+                                <!-- Этап 1: Ввод почты -->
+                                <div class="recovery-step active" id="step1">
+                                    <h3>Восстановление пароля</h3>
+                                    <p class="recovery-message info">Введите email вашей учетной записи</p>
+                                    <input type="email" id="recoveryEmail" name="email" placeholder="Email"
+                                           required>
+                                    <div class="recovery-actions">
+                                        <button type="button" class="btn-secondary" onclick="showLoginForm()">Назад
+                                        </button>
+                                        <button type="button" class="auth-btn" onclick="startRecovery()">
+                                            Восстановить
+                                            пароль
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Этап 2: Ввод кода -->
+                                <div class="recovery-step" id="step2">
+                                    <h3>Проверка кода</h3>
+                                    <p class="recovery-message info">На вашу почту отправлен код подтверждения</p>
+                                    <input type="text" id="recoveryCode" placeholder="Введите код из письма"
+                                           required
+                                           maxlength="6">
+                                    <div class="recovery-actions">
+                                        <button type="button" class="btn-secondary" onclick="backToStep1()">Назад
+                                        </button>
+                                        <button type="button" class="auth-btn" onclick="verifyRecoveryCode()">
+                                            Проверить
+                                            код
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Этап 3: Ввод нового пароля -->
+                                <div class="recovery-step" id="step3">
+                                    <h3>Новый пароль</h3>
+                                    <p class="recovery-message info">Введите новый пароль для вашей учетной
+                                        записи</p>
+                                    <input type="password" id="newPassword" name="password"
+                                           placeholder="Новый пароль" required>
+                                    <div class="password-strength">
+                                        <div class="password-strength-bar"></div>
+                                    </div>
+                                    <p class="password-requirements">Пароль должен содержать минимум 6 символов</p>
+                                    <input type="password" id="confirmPassword" placeholder="Повторите пароль"
+                                           required>
+                                    <div class="recovery-actions">
+                                        <button type="button" class="btn-secondary" onclick="backToStep2()">Назад
+                                        </button>
+                                        <button type="submit" class="auth-btn" name="recovery_password">Сменить
+                                            пароль
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                {% else %}
+                    <div id="profile">
+                        <h2>Ваш профиль</h2>
+                        <div class="profile-info">
+                            <p><strong>Имя:</strong> <span
+                                    id="profileFirstName">{{ user.name|default:"—" }}</span></p>
+                            <p><strong>Фамилия:</strong> <span
+                                    id="profileLastName">{{ user.surname|default:"—" }}</span></p>
+                            <p><strong>Email:</strong> <span id="profileEmail">{{ user.email }}</span></p>
+                            <p><strong>Телефон:</strong> <span
+                                    id="profilePhone">{{ user.phone|default:"Не указан" }}</span></p>
+                            <p><strong>Баланс:</strong> <span
+                                    id="profileBalance">{{ user.balance|default:"0" }}</span>
+                                ₽</p>
                         </div>
 
-                    {% endif %}
-                </div>
+                        <button id="topUpBtn">Пополнить баланс</button>
+                        <button id="logoutBtn">Выйти</button>
+                        <!-- Список серверов -->
+                        <div class="servers-section" style="margin-top: 30px;">
+                            <h3 style="margin-bottom: 20px; color: var(--primary);">Ваши серверы</h3>
+                            <div class="servers-list" id="serversList">
+                                {% for server in servers %}
+                                    <div class="server-card" data-server-id="{{ server.id }}"
+                                         style="background: white; border-radius: var(--border-radius); padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); border-left: 4px solid var(--primary);">
+                                        <div class="server-header"
+                                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                            <div class="server-name"
+                                                 style="font-size: 18px; font-weight: 600; color: var(--dark);">
+                                                {{ server.name }}
+                                            </div>
+                                            {% if server.is_power_on %}
+                                                <div class="server-status"
+                                                     style="display: flex; align-items: center; gap: 12px;">
+                                                    <div class="status-indicator"
+                                                         style="width: 12px; height: 12px; border-radius: 50%; background: #28a745;"></div>
+                                                    <span style="color: #28a745; font-weight: 500;">Включен</span>
+                                                    <button class="toggle-server-btn"
+                                                            data-server-id="{{ server.id }}"
+                                                            data-current-status="on"
+                                                            style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 12px; font-weight: 500; transition: var(--transition);"
+                                                            onclick="toggleServer('{{ server.id }}', 'off')">
+                                                        Выключить
+                                                    </button>
+                                                </div>
+                                            {% else %}
+                                                <div class="server-status"
+                                                     style="display: flex; align-items: center; gap: 12px;">
+                                                    <div class="status-indicator"
+                                                         style="width: 12px; height: 12px; border-radius: 50%; background: #dc3545;"></div>
+                                                    <span style="color: #dc3545; font-weight: 500;">Выключен</span>
+                                                    <button class="toggle-server-btn"
+                                                            data-server-id="{{ server.id }}"
+                                                            data-current-status="off"
+                                                            style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 12px; font-weight: 500; transition: var(--transition);"
+                                                            onclick="toggleServer('{{ server.id }}', 'on')">
+                                                        Включить
+                                                    </button>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div class="server-specs"
+                                             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
+                                            <div class="spec-item">
+                                                <strong style="color: var(--gray);">Локация:</strong>
+                                                <span>{{ server.location_id }}</span>
+                                            </div>
+                                            <div class="spec-item">
+                                                <strong style="color: var(--gray);">ОС:</strong>
+                                                <span>{{ server.image_id }}</span>
+                                            </div>
+                                            <div class="spec-item">
+                                                <strong style="color: var(--gray);">Ядра:</strong>
+                                                <span>{{ server.cpu }}CPU</span>
+                                            </div>
+                                            <div class="spec-item">
+                                                <strong style="color: var(--gray);">ОЗУ:</strong>
+                                                <span>{{ server.ram_mb }} GB</span>
+                                            </div>
+                                            <div class="spec-item">
+                                                <strong style="color: var(--gray);">Диск:</strong>
+                                                {% for volume in server.volumes %}
+                                                    <span>{{ volume.size_mb }} GB SSD</span>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        {% for nics in server.nics %}
+                                            <div class="server-credentials"
+                                                 style="background: var(--light-gray); padding: 15px; border-radius: var(--border-radius-sm); margin-bottom: 15px;">
+                                                <div class="ip-address">
+                                                    <strong style="color: var(--gray);">IP адрес:</strong>
+                                                    <span onclick="copyToClipboard('{{ nics.ip_address }}')">
+                                {{ nics.ip_address }} <i class="fas fa-copy"></i>
+                            </span>
+                                                </div>
+                                                <div class="password"
+                                                     style="display: flex; align-items: center; gap: 10px;">
+                                                    <strong style="color: var(--gray);">Пароль:</strong>
+                                                    <span style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px; flex: 1;"
+                                                          onclick="copyToClipboard('{{ server.password }}')">
+                                •••••••••• <i class="fas fa-copy"></i>
+                            </span>
+                                                </div>
+                                                <div class="ip-address" style="margin-bottom: 10px;">
+                                                    <strong style="color: var(--gray);">SSH:</strong>
+                                                    <span style="font-family: monospace; padding: 4px 8px; border-radius: 4px; margin-left: 8px;"
+                                                          onclick="copyToClipboard('ssh root@{{ nics.ip_address }}')">
+                                ssh root@192.168.1.101 <i class="fas fa-copy"></i>
+                            </span>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                        <div class="server-actions"
+                                             style="display: flex; justify-content: flex-end;">
+                                            <button class="delete-server-btn"
+                                                    style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: var(--border-radius-sm); cursor: pointer; font-weight: 500; transition: var(--transition);"
+                                                    onclick="deleteServer('{{ server.id }}')">
+                                                Удалить сервер
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <div class="balance-history">
+                            <h3>История пополнений</h3>
+                        {% if request.user.history.all %}
+                            {% for history in request.user.history.all %}
+                            <div class="history-item">
+                                    <div class="history-info">
+                                        <div class="history-date">{{ history.format_datetime_russian }}</div>
+                                        <div class="history-amount positive">+{{ history.format_amount }} ₽</div>
+                                    </div>
+                                    <div class="history-status status-completed">Завершено</div>
+                                </div>
+                            {% endfor %}
+                            <div class="history-list" id="balanceHistory">
+                                {% else %}
+                                <div id="emptyHistory"
+                                     style="display: none; text-align: center; padding: 20px; color: var(--gray);">
+                                    <i class="fas fa-history" style="font-size: 48px; margin-bottom: 10px;"></i>
+                                    <p>История пополнений пуста</p>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                {% endif %}
 
             </div>
         </div>
@@ -1477,6 +1740,93 @@
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('recoveryForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
+            // Reset to step 1 when showing registration form
+            showRegistrationStep(1);
+        }
+
+        // NEW: Two-step registration functions
+        function showRegistrationStep(step) {
+            // Hide all steps
+            document.querySelectorAll('.registration-step').forEach(stepEl => {
+                stepEl.style.display = 'none';
+            });
+
+            // Show the selected step
+            document.getElementById(`registerStep${step}`).style.display = 'block';
+
+            // Update step indicators
+            document.querySelectorAll('.step').forEach(stepEl => {
+                stepEl.classList.remove('active', 'completed');
+            });
+
+            for (let i = 1; i <= step; i++) {
+                const stepIndicator = document.getElementById(`step${i}-indicator`);
+                if (i < step) {
+                    stepIndicator.classList.add('completed');
+                } else {
+                    stepIndicator.classList.add('active');
+                }
+            }
+        }
+
+        function proceedToStep2() {
+            // Validate step 1 fields
+            const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (!firstName || !lastName || !email || !password) {
+                alert('Пожалуйста, заполните все обязательные поля');
+                return;
+            }
+
+            if (!isValidEmail(email)) {
+                alert('Пожалуйста, введите корректный email');
+                return;
+            }
+
+            if (password.length < 6) {
+                alert('Пароль должен содержать минимум 6 символов');
+                return;
+            }
+
+            // In a real application, you would send the data to the server here
+            // and only proceed if the email is available
+
+            // For demonstration, we'll proceed to step 2
+            showRegistrationStep(2);
+
+            // Simulate sending confirmation code
+            // In a real app, this would be an API call to your backend
+            fetch('{% url 'password_recovery' %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCsrfToken()
+                },
+                body: JSON.stringify({email: email})
+            })
+                .then(response => {
+                    if (response.status === 200) {
+                        showRecoveryMessage('Код отправлен на вашу почту', 'success');
+                    } else if (response.status === 400) {
+                        showRecoveryMessage('Почта не найдена', 'error');
+                        setTimeout(() => {
+                            backToStep1();
+                        }, 1500);
+                    } else {
+                        showRecoveryMessage('Ошибка сервера', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showRecoveryMessage('Ошибка соединения', 'error');
+                });
+        }
+
+        function backToStep1() {
+            showRegistrationStep(1);
         }
 
         function showRecoveryForm() {
@@ -1704,6 +2054,12 @@
                 this.classList.remove('active');
             });
 
+            // NEW: Header top-up button functionality
+            document.getElementById('headerTopUpBtn').addEventListener('click', function () {
+                document.getElementById('topUpModal').style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+
             // Payment methods selection
             document.querySelectorAll('.payment-method input').forEach(radio => {
                 radio.addEventListener('change', function () {
@@ -1883,7 +2239,7 @@
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Network response was not ok');
-                    }else{
+                    } else {
                         // Обновляем UI в зависимости от нового статуса
                         if (newStatus === 'on') {
                             // Включаем сервер
@@ -1911,12 +2267,12 @@
                     }
 
                 }).catch(error => {
-                    console.error('Error:', error);
-                    showNotification('Ошибка при изменении статуса сервера', 'error');
+                console.error('Error:', error);
+                showNotification('Ошибка при изменении статуса сервера', 'error');
 
-                    // Восстанавливаем оригинальный текст кнопки
-                    button.textContent = originalText;
-                })
+                // Восстанавливаем оригинальный текст кнопки
+                button.textContent = originalText;
+            })
                 .finally(() => {
                     // Восстанавливаем состояние кнопки
                     button.disabled = false;
@@ -1926,13 +2282,56 @@
 
         // Функции для работы с серверами
         function copyToClipboard(text) {
-            navigator.clipboard.writeText(text).then(function () {
-                showNotification('Cкопировано в буфер обмена');
-            }).catch(function (err) {
-                console.error('Ошибка при копировании: ', err);
-                showNotification('Ошибка при копировании', 'error');
-            });
+            // 1. Попытка использовать современный Clipboard API (предпочтительный)
+            if (navigator.clipboard && navigator.clipboard.writeText && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(function () {
+                    showNotification('Cкопировано в буфер обмена');
+                }).catch(function (err) {
+                    console.error('Ошибка при копировании через Clipboard API: ', err);
+                    showNotification('Ошибка при копировании: ' + err, 'error');
+                    // Если Clipboard API не сработал (например, нет разрешения), пробуем fallback
+                    fallbackCopyToClipboard(text);
+                });
+            } else {
+                // 2. Fallback для HTTP (не localhost) или старых браузеров
+                console.warn('Clipboard API недоступен или не поддерживается. Попытка использовать document.execCommand().');
+                fallbackCopyToClipboard(text);
+            }
         }
+
+        function fallbackCopyToClipboard(text) {
+            let textarea;
+            try {
+                textarea = document.createElement('textarea');
+                textarea.value = text;
+                // Стилизация, чтобы textarea не была видна и не мешала макету
+                textarea.style.position = 'fixed';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.width = '2em';
+                textarea.style.height = '2em';
+                textarea.style.padding = '0';
+                textarea.style.border = 'none';
+                textarea.style.outline = 'none';
+                textarea.style.boxShadow = 'none';
+                textarea.style.background = 'transparent';
+
+                document.body.appendChild(textarea);
+                textarea.focus();
+                textarea.select(); // Выделяем текст в textarea
+
+                document.execCommand('copy'); // Выполняем команду копирования
+                showNotification('Cкопировано в буфер обмена');
+            } catch (err) {
+                console.error('Ошибка при копировании через document.execCommand: ', err);
+                showNotification('Ошибка при копировании (fallback): ' + err, 'error');
+            } finally {
+                if (textarea && textarea.parentNode) {
+                    textarea.parentNode.removeChild(textarea); // Удаляем временный элемент
+                }
+            }
+        }
+
 
         function deleteServer(serverId) {
             if (confirm('Вы уверены, что хотите удалить этот сервер? Это действие нельзя отменить.')) {
@@ -1942,8 +2341,8 @@
                         'X-CSRFToken': getCsrfToken()
                     },
                     body: JSON.stringify({
-                    server_id: serverId
-                })
+                        server_id: serverId
+                    })
                 })
                     .then(response => {
                         if (response.ok) {
@@ -1996,7 +2395,7 @@
                 setTimeout(() => {
                     document.body.removeChild(notification);
                 }, 300);
-            }, 3000);
+            }, 3000)
         }
     </script>
 {% endif %}

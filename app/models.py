@@ -36,6 +36,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin): # Изменено на Ab
     balance = models.FloatField(default=0, verbose_name="Баланс пользователя")
     servers = models.ManyToManyField('Server', blank=True, verbose_name='Серверы пользователя')
     reforce_password = models.IntegerField(default=None, blank=True, null=True, verbose_name='Точка для восстановления пароля')
+    history = models.ManyToManyField('History', blank=True, verbose_name='История пополнения')
 
     # Добавляем поля, которые обычно есть в AbstractUser, но отсутствуют в AbstractBaseUser
     is_staff = models.BooleanField(default=False, verbose_name='Статус персонала') # Для доступа к админке
@@ -70,3 +71,31 @@ class Server(models.Model):
     server_id = models.CharField(max_length=128, verbose_name='ID сервера')
     price = models.FloatField(verbose_name='Цена сервера')
     buy_date = models.DateTimeField(verbose_name='Дата покупки/продления сервера')
+    pay_date = models.DateTimeField(verbose_name='Дата последней оплаты')
+
+
+class Verify(models.Model):
+    email = models.EmailField(verbose_name='Почта для верефикации')
+    code = models.IntegerField(default=None, blank=True, null=True, verbose_name='Код для подтверждения почты')
+
+
+class History(models.Model):
+    date = models.DateTimeField(auto_now_add=True, verbose_name='Дата пополнения')
+    amount = models.FloatField(verbose_name='Сумма пополнения')
+
+    def format_amount(self):
+        return f"{self.amount:,.2f}".replace(',', ' ')
+
+    def format_datetime_russian(self):
+        russian_month_names_genitive = {
+            1: "января", 2: "февраля", 3: "марта", 4: "апреля",
+            5: "мая", 6: "июня", 7: "июля", 8: "августа",
+            9: "сентября", 10: "октября", 11: "ноября", 12: "декабря"
+        }
+        dt_obj = self.date
+        day = dt_obj.day
+        month_name = russian_month_names_genitive[dt_obj.month]
+        year = dt_obj.year
+        hour = dt_obj.hour
+        minute = dt_obj.minute
+        return f"{day} {month_name} {year}, {hour:02}:{minute:02}"

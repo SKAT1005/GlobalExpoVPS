@@ -25,5 +25,6 @@ urlpatterns = [
     path('send_message_in_bot', send_message_in_bot, name='send_message_in_bot'),
     path('buy_server', buy_server, name='buy_server'),
     path('turn_off_server', turn_off_server, name='turn_off_server'),
-    path('delite_server', delite_server, name='delite_server')
+    path('delite_server', delite_server, name='delite_server'),
+    path('password_recovery', password_recovery, name='password_recovery')
 ]

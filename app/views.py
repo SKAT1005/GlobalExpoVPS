@@ -25,9 +25,10 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 
 from GlobalExpoVPS.settings import EMAIL_HOST_USER
-from app.models import CustomUser, Server
+from app.models import CustomUser, Server, Verify, History
 from app.tbank_methods import create_tbank_payment, get_payment_status
 import telebot
+
 api_key = '0658bb976cf550df03209d4b465b0a85c25eaa0010564495f7fa75b18b938036'
 bot = telebot.TeleBot('7071542790:AAHawETvNXlXppKYzAhd9tShU1GN9ja81Vo')
 CHAT_ID = -5063638309
@@ -35,9 +36,9 @@ headers = {
     'X-API-KEY': api_key
 }
 
-
 # Глобальное хранилище метаданных платежей
 PAYMENT_METADATA = {}  # payment_id → { "callback_url": ..., "user_id": ... }
+
 
 @csrf_exempt
 def feedback(request):
@@ -78,6 +79,7 @@ def privacy_policy_view(request):
     if request.method == 'GET':
         return render(request, 'privacy_policy.html')
 
+
 def servers_view(request):
     if request.method == 'GET':
         return render(request, 'servers.html')
@@ -89,22 +91,59 @@ def topup_success(request):
         if request.method == 'POST':
             data = json.loads(request.body)
             amount = int(data.get('amount'))
+            history = History.objects.create(amount=amount)
             user.balance += amount
             user.save(update_fields=['balance'])
+            user.history.add(history)
             return JsonResponse({'status': 'complite'}, status=200)
 
+
 def password_recovery(request):
+    try:
+        if request.method == 'POST':
+            data = json.loads(request.body)
+            email = data.get('email')
+            code = random.randint(100000, 999999)
+            subject = 'Подтверждение почты'
+            html_message = render_to_string('verify_email.html', {
+                'code': code
+            })
+
+            # Текстовая версия (для клиентов без поддержки HTML)
+            plain_message = strip_tags(html_message)
+
+            send_mail(
+                subject=subject,
+                message=plain_message,
+                from_email=EMAIL_HOST_USER,
+                recipient_list=[email],
+                html_message=html_message,
+                fail_silently=False,
+            )
+            verify, _ = Verify.objects.get_or_create(
+                email=email
+            )
+            verify.code = code
+            verify.save()
+            return JsonResponse({'status': 'complite'}, status=200)
+        else:
+            return JsonResponse({'status': 'faild'}, status=400)
+    except Exception:
+        return JsonResponse({'status': 'faild'}, status=400)
+
+
+def email_verify(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         email = data.get('email')
-        user  = CustomUser.objects.filter(email=email).first()
+        user = CustomUser.objects.filter(email=email).first()
         if user:
-            code = random.randint(100000,999999)
+            code = random.randint(100000, 999999)
             subject = 'Восстановление пароля'
 
             user.reforce_password = code
             user.save(update_fields=['reforce_password'])
-            html_message = render_to_string('email.html', {
+            html_message = render_to_string('recovery_email.html', {
                 'code': code
             })
 
@@ -129,10 +168,11 @@ def code_verify(request):
         data = json.loads(request.body)
         email = data.get('email')
         code = data.get('code')
-        user  = CustomUser.objects.filter(email=email, reforce_password=code).first()
+        user = CustomUser.objects.filter(email=email, reforce_password=code).first()
         if user:
             return JsonResponse({'status': 'complite'}, status=200)
     return JsonResponse({'status': 'faild'}, status=400)
+
 
 class ProfileView(View):
 
@@ -146,15 +186,14 @@ class ProfileView(View):
                 server_id = server['id']
                 if user.servers.filter(server_id=server_id):
                     server['ram_mb'] //= 1024
-                    server['volumes'][0]['size_mb'] //=1024
+                    server['volumes'][0]['size_mb'] //= 1024
                     user_servers.append(server)
             print(user_servers)
         return render(request, 'profile.html', context={'servers': user_servers})
 
-
     def post(self, request):
         errors = []
-        registraion = False
+        registration = False
         if 'login' in request.POST:
             email = request.POST.get('email')
             password = request.POST.get('password')
@@ -167,12 +206,17 @@ class ProfileView(View):
             else:
                 errors.append('Неверный email или пароль.')
         elif 'registration' in request.POST:
-            registraion = True
+            registration = True
             email = request.POST.get('email')
             name = request.POST.get('name')
             surname = request.POST.get('surname')
             phone = request.POST.get('phone')
             password = request.POST.get('password')
+            code = request.POST.get('code')
+            try:
+                Verify.objects.get(email=email, code=int(code))
+            except Exception:
+                errors.append('Введен неверный код')
 
             # Словарь для хранения ошибок, которые будут переданы в шаблон
             try:
@@ -185,7 +229,8 @@ class ProfileView(View):
                     errors.append("Пользователь с таким email уже существует.")
             if not errors:
                 try:
-                    user = CustomUser.objects.create_user(email=email, password=password, name=name, surname=surname, phone=phone)
+                    user = CustomUser.objects.create_user(email=email, password=password, name=name, surname=surname,
+                                                          phone=phone)
 
                     login(request, user)
 
@@ -207,15 +252,19 @@ class ProfileView(View):
                 login(request, user)
             else:
                 errors.append('Неверный email или пароль.')
-        context = {'errors': errors, 'registraion': registraion}
+        context = {'errors': errors, 'registration': registration}
         return render(request, 'profile.html', context=context)
+
 
 def logout_view(request):
     logout(request)
     return redirect('profile')
+
+
 class ConfiguratorView(View):
     def get(self, request):
         return render(request, 'configurator.html')
+
 
 @csrf_exempt
 def get_serverspace_location(request):
@@ -223,6 +272,7 @@ def get_serverspace_location(request):
     data = requests.get(url=url, headers=headers).json()
 
     return JsonResponse(data, safe=False)
+
 
 @csrf_exempt
 def send_message_in_bot(request):
@@ -241,6 +291,7 @@ def send_message_in_bot(request):
         bot.send_message(chat_id=CHAT_ID, text=text)
         return HttpResponse(status=200)
 
+
 def turn_off_server(request):
     if request.method == 'POST' and request.user.is_authenticated:
         data = json.loads(request.body)
@@ -255,6 +306,7 @@ def turn_off_server(request):
         return HttpResponse("OK")
     return HttpResponseBadRequest(status=404)
 
+
 def delite_server(request):
     if request.method == 'DELETE' and request.user.is_authenticated:
         data = json.loads(request.body)
@@ -262,20 +314,11 @@ def delite_server(request):
         user = request.user
         server = user.servers.filter(server_id=server_id).first()
         if server:
-            server_price_per_hour = round(server.price / (24*30), 2)
-            add_server_time = server.buy_date
-            now_time = timezone.now()
-            hours = math.ceil((now_time-add_server_time).total_seconds()/60/60)
-            complite_price = round(server_price_per_hour*hours,2)
-            return_money = max(0, round(server.price-complite_price,2))
-            user.balance += return_money
-            user.save(update_fields=['balance'])
             delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
             requests.delete(url=delete_url, headers=headers)
             server.delete()
             return HttpResponse("OK")
     return HttpResponseBadRequest(status=404)
-
 
 
 @csrf_exempt
@@ -289,49 +332,64 @@ def get_price(request):
     except Exception:
         return HttpResponseBadRequest(status=400)
 
+
+def get_server_id(task_id, price, user):
+    get_task_url = f'https://api.serverspace.ru/api/v1/tasks/{task_id}'
+    while True:
+        try:
+            responce = requests.get(url=get_task_url, headers=headers).json()
+            server_id = responce['task']['server_id']
+            server = Server.objects.create(
+                server_id=server_id,
+                price=price,
+                buy_date=timezone.now()
+            )
+            user.servers.add(server)
+            break
+        except KeyError:
+            time.sleep(5)
+
+
 @csrf_exempt
 def buy_server(request):
-    try:
-        data = json.loads(request.body)
-        user = request.user
-        url = 'https://api.serverspace.ru/api/v1/servers/price'
-        responce = requests.post(url=url, json=data, headers=headers).json()
+    if request.method == 'POST':
         try:
-            price = responce['price'] * 1.1
-            if user.balance < price:
-                return HttpResponseBadRequest(status=402)
-            else:
-                try:
-                    buy_server_url = 'https://api.serverspace.ru/api/v1/servers'
-                    new_balance = round(user.balance - price,2)
-                    data['networks'] = [{"bandwidth_mbps": 50}]
-                    email = 'slavatukin@mail.ru'
-                    number = str(int(time.time()))
-                    new_string = f'{email}_{number}'
-                    server_name = base64.b64encode(new_string.encode('utf-8')).decode('utf-8')[:-1]
-                    data['name'] = server_name
-                    data['server_init_script'] = 'sudo apt update'
-                    responce = requests.post(url=buy_server_url, json=data, headers=headers).json()
-                    time.sleep(3)
-                    task_id = responce['task_id']
-                    get_task_url = f'https://api.serverspace.ru/api/v1/tasks/{task_id}'
-                    responce = requests.get(url=get_task_url, headers=headers).json()
-                    server_id = responce['task']['server_id']
-                    server = Server.objects.create(
-                        server_id = server_id,
-                        price=price,
-                        buy_date=timezone.now()
-                    )
-                    user.servers.add(server)
-                    user.balance = new_balance
-                    user.save(update_fields=['balance'])
-                    return HttpResponse("OK")
-                except Exception:
-                    return HttpResponseBadRequest(status=404)
-        except Exception:
-            return HttpResponseBadRequest(status=400)
-    except Exception:
-        return HttpResponseBadRequest(status=404)
+            data = json.loads(request.body)
+            user = request.user
+            url = 'https://api.serverspace.ru/api/v1/servers/price'
+            responce = requests.post(url=url, json=data, headers=headers).json()
+            try:
+                price = responce['price'] * 1.1
+                if user.balance < price:
+                    return HttpResponseBadRequest(status=402)
+                else:
+                    try:
+                        buy_server_url = 'https://api.serverspace.ru/api/v1/servers'
+                        data['networks'] = [{"bandwidth_mbps": 50}]
+                        email = 'slavatukin@mail.ru'
+                        number = str(int(time.time()))
+                        new_string = f'{email}_{number}'
+                        server_name = base64.b64encode(new_string.encode('utf-8')).decode('utf-8')[:-1]
+                        data['name'] = server_name
+                        data['server_init_script'] = 'sudo apt update'
+                        print(data)
+                        responce = requests.post(url=buy_server_url, json=data, headers=headers).json()
+                        time.sleep(3)
+                        task_id = responce['task_id']
+                        thread = threading.Thread(target=get_server_id, args=(task_id, price, user))
+                        thread.start()
+                        return HttpResponse("OK")
+                    except Exception as e:
+                        print(f'Error: {e}')
+                        return HttpResponseBadRequest(status=404)
+            except Exception:
+                return HttpResponseBadRequest(status=400)
+        except Exception as e:
+            print(f'Error: {e}')
+            return HttpResponseBadRequest(status=404)
+    return render(request, 'about_us.html')
+
+
 class PaymentCreateView(View):
     def post(self, request):
         try:
@@ -355,7 +413,6 @@ class PaymentCreateView(View):
                 "callback_url": callback_url,
                 "user_id": user_id  # может быть None
             }
-
 
             return JsonResponse({
                 "id": payment_id,
@@ -464,21 +521,24 @@ class TbankWebhookView(View):
         return ip
 
 
-
 def update_server_price():
     while True:
-        thirty_days_ago = timezone.now() - datetime.timedelta(days=30)
-        for server in Server.objects.filter(buy_date__lt=thirty_days_ago):
+        thirty_days_ago = timezone.now() - datetime.timedelta(hours=1)
+        for server in Server.objects.filter(pay_date__lt=thirty_days_ago):
             user = CustomUser.objects.filter(servers=server).first()
-            if user.balance >= server.price:
-                user.balance -= server.price
+            pay = round(server.price / 720, 2)
+            if user.balance >= pay:
+                new_balance = round(user.balance - pay, 2)
+                server.pay_date = timezone.now()
+                server.save(update_fields=['pay_date'])
+                user.balance = new_balance
                 user.save(update_fields=['balance'])
             else:
                 server_id = server.server_id
                 delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
                 requests.delete(url=delete_url, headers=headers)
                 server.delete()
-        time.sleep(60*60)
+        time.sleep(60 * 10)
 
 
 polling_thread2 = threading.Thread(target=update_server_price)

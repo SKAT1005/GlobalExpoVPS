@@ -1,14 +1,7 @@
-import telebot
-
-bot = telebot.TeleBot('6311655580:AAEAuAfLbzHjWCPnKIrsExE_W6CrsjmElYY')
-CHAT_ID = 5063638309
+number_float = 12345.678
 
 
-
-@bot.message_handler(content_types=['text'])
-def msg(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id=chat_id, text=chat_id)
-
-
-bot.polling(none_stop=True)
+# Для чисел с плавающей точкой (например, с двумя знаками после запятой)
+# Обратите внимание, что десятичный разделитель останется точкой
+formatted_float = f"{number_float:,.2f}".replace(',', ' ')
+print(formatted_float)

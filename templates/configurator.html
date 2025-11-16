@@ -1099,9 +1099,9 @@
                                 <span class="slider-label">Размер диска</span>
                                 <span class="slider-value" id="storageValue">50 ГБ</span>
                             </div>
-                            <input type="range" min="1" max="100" value="5" class="slider" id="storageSlider">
+                            <input type="range" min="3" max="100" value="5" class="slider" id="storageSlider">
                             <div class="slider-controls">
-                                <span>10 ГБ</span>
+                                <span>30 ГБ</span>
                                 <span id="HardGB">1000 ГБ</span>
                             </div>
                         </div>
@@ -1119,7 +1119,8 @@
                         <div class="price-display">
                             <div class="price-amount" id="totalPrice">—</div>
                             <div class="price-period">в месяц</div>
-                            <div class="price-hourly" id="hourlyPrice">— в час</div>
+                            <div class="price-hourly" id="hourlyPrice">—</div>
+                            <div class="price-period">в час</div>
                         </div>
 
                         <div class="config-summary">
@@ -1410,7 +1411,6 @@
             {% endif %}
         });
     }
-    }
 
     // Load locations from API
     async function loadLocations() {
@@ -1560,10 +1560,10 @@
             // Update price display
             if (data.price) {
                 const monthlyPrice = Math.round(data.price);
-                const hourlyPrice = (monthlyPrice / 720).toFixed(2);
+                const hourlyPriceconst = (monthlyPrice / 720).toFixed(2);
 
                 totalPrice.textContent = `${monthlyPrice} ₽`;
-                hourlyPrice.textContent = `${hourlyPrice} ₽/час`;
+                hourlyPrice.textContent = `${hourlyPriceconst} ₽`;
 
                 orderBtn.disabled = false;
                 orderBtn.innerHTML = '<i class="fas fa-shopping-cart"></i><span>Заказать сервер</span>';
