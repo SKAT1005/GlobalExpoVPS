@@ -18,11 +18,11 @@
             --gray: #6C757D;
             --light-gray: #E9ECEF;
             --white: #FFFFFF;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.12);
             --transition: all 0.3s ease;
             --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            --border-radius: 16px;
+            --border-radius: 12px;
             --border-radius-sm: 8px;
         }
 
@@ -33,176 +33,58 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
             color: #333;
             background-color: #fff;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            -webkit-text-size-adjust: 100%;
         }
 
-        /* Header Styles */
+        /* Header Mobile First */
         header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
+            background: var(--white);
             box-shadow: var(--shadow);
             position: sticky;
             top: 0;
             z-index: 1000;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            border-bottom: 1px solid var(--light-gray);
         }
 
         .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            max-width: 1200px;
+            padding: 0.75rem 1rem;
+            max-width: 1500px;
             margin: 0 auto;
         }
 
         .logo {
-            height: 40px;
+            height: 32px;
             width: auto;
-            transition: var(--transition);
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
         }
 
         .nav-menu {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            text-decoration: none;
-            color: var(--dark);
-            font-weight: 500;
-            transition: var(--transition);
-            position: relative;
-            padding: 0.5rem 0;
-        }
-
-        .nav-link:hover {
-            color: var(--primary);
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: var(--transition);
-        }
-
-        .nav-link:hover::after {
-            width: 100%;
-        }
-
-        .nav-link.active {
-            color: var(--primary);
-            font-weight: 600;
-        }
-
-        .nav-link.active::after {
-            width: 100%;
+            display: none;
         }
 
         .header-actions {
-            display: flex;
-            gap: 1rem;
-            align-items: center;
-        }
-
-        /* NEW: User Balance Section */
-        .user-balance {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            background: var(--light);
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-sm);
-            border: 1px solid var(--light-gray);
-        }
-
-        .balance-amount {
-            font-weight: 600;
-            color: var(--primary);
-            font-size: 1rem;
-        }
-
-        .balance-label {
-            font-size: 0.85rem;
-            color: var(--gray);
-        }
-
-        .top-up-btn {
-            background: var(--gradient);
-            color: var(--white);
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: var(--border-radius-sm);
-            font-weight: 500;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .top-up-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.3);
-        }
-
-        .header-btn {
-            padding: 0.5rem 1.5rem;
-            border-radius: var(--border-radius-sm);
-            font-weight: 500;
-            text-decoration: none;
-            transition: var(--transition);
-            border: 2px solid transparent;
-        }
-
-        .header-btn-outline {
-            background: transparent;
-            color: var(--primary);
-            border-color: var(--primary);
-        }
-
-        .header-btn-outline:hover {
-            background: var(--primary);
-            color: var(--white);
-        }
-
-        .header-btn-primary {
-            background: var(--gradient);
-            color: var(--white);
-            box-shadow: 0 2px 8px rgba(42, 91, 140, 0.3);
-        }
-
-        .header-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.4);
+            display: none;
         }
 
         .mobile-toggle {
-            display: none;
+            display: block;
             background: none;
             border: none;
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             cursor: pointer;
             color: var(--dark);
             padding: 0.5rem;
+            width: 44px;
+            height: 44px;
         }
 
         /* Mobile Menu */
@@ -210,15 +92,14 @@
             position: fixed;
             top: 0;
             right: -100%;
-            width: 300px;
+            width: 100%;
             height: 100%;
             background: var(--white);
             z-index: 1100;
             transition: var(--transition);
-            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-            padding: 2rem;
             display: flex;
             flex-direction: column;
+            overflow-y: auto;
         }
 
         .mobile-menu.active {
@@ -229,13 +110,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
+            padding: 1rem 1.5rem;
             border-bottom: 1px solid var(--light-gray);
+            background: var(--white);
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
         .mobile-menu-logo {
-            height: 35px;
+            height: 30px;
         }
 
         .mobile-menu-close {
@@ -245,15 +129,18 @@
             cursor: pointer;
             color: var(--dark);
             padding: 0.5rem;
+            width: 44px;
+            height: 44px;
         }
 
         .mobile-nav {
             list-style: none;
-            margin-bottom: auto;
+            padding: 1rem 1.5rem;
+            flex: 1;
         }
 
         .mobile-nav-item {
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
         }
 
         .mobile-nav-link {
@@ -261,21 +148,57 @@
             text-decoration: none;
             color: var(--dark);
             font-weight: 500;
-            padding: 0.75rem 0;
+            padding: 1rem 0;
             border-bottom: 1px solid var(--light-gray);
             transition: var(--transition);
+            font-size: 1.1rem;
         }
 
-        .mobile-nav-link:hover,
         .mobile-nav-link.active {
             color: var(--primary);
         }
 
         .mobile-actions {
+            padding: 1.5rem;
+            border-top: 1px solid var(--light-gray);
+            background: var(--light);
+        }
+
+        .mobile-user-balance {
+            background: var(--white);
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 1rem;
+            text-align: center;
+            border: 1px solid var(--light-gray);
+        }
+
+        .balance-amount {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .balance-label {
+            font-size: 0.875rem;
+            color: var(--gray);
+        }
+
+        .mobile-top-up-btn {
+            width: 100%;
+            padding: 1rem;
+            background: var(--gradient);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 1rem;
             display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            margin-top: 2rem;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
         }
 
         .mobile-overlay {
@@ -293,53 +216,36 @@
             display: block;
         }
 
-        /* Main Content */
+        /* Main Content Mobile First */
         .page {
-            padding: 4rem 0;
+            padding: 1rem 0;
             flex: 1;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
         }
 
-        .main-about {
-            display: flex;
-            gap: 4rem;
-            align-items: center;
-            min-height: 60vh;
-        }
-
-        .main-about__col {
-            flex: 1;
-        }
-
-        .main-about__col--img img {
-            max-width: 100%;
-            height: auto;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-        }
-
-        /* Auth Forms */
+        /* Auth Forms Mobile */
         #authForms {
+            width: 100%;
             max-width: 400px;
             margin: 0 auto;
         }
 
         #loginForm, #registerForm, #recoveryForm {
-            padding: 30px;
-            background: white;
+            background: var(--white);
             border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         #loginForm h3, #registerForm h3, #recoveryForm h3 {
-            margin: 0 0 20px;
-            font-size: 22px;
+            margin: 0 0 1.5rem;
+            font-size: 1.5rem;
             font-weight: 600;
             color: var(--primary);
             text-align: center;
@@ -348,46 +254,42 @@
         input[type="text"],
         input[type="email"],
         input[type="password"],
-        input[type="tel"],
-        input[type="date"] {
+        input[type="tel"] {
             width: 100%;
-            padding: 12px;
-            margin: 8px 0;
+            padding: 1rem;
+            margin: 0.5rem 0;
             border: 2px solid var(--light-gray);
             border-radius: var(--border-radius-sm);
-            font-size: 14px;
+            font-size: 16px; /* Prevent zoom on iOS */
             transition: var(--transition);
+            background: var(--white);
         }
 
         input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.1);
             outline: none;
+            box-shadow: 0 0 0 3px rgba(42, 91, 140, 0.1);
         }
 
         button[type="submit"], .auth-btn {
             width: 100%;
-            padding: 12px;
+            padding: 1rem;
             background: var(--gradient);
-            color: white;
+            color: var(--white);
             border: none;
             border-radius: var(--border-radius-sm);
-            font-size: 16px;
+            font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 1rem;
             transition: var(--transition);
-        }
-
-        button[type="submit"]:hover, .auth-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(42, 91, 140, 0.3);
+            min-height: 52px;
         }
 
         .form-switch {
             text-align: center;
-            margin-top: 16px;
-            font-size: 14px;
+            margin-top: 1rem;
+            font-size: 0.875rem;
             color: var(--gray);
         }
 
@@ -397,24 +299,807 @@
             color: var(--primary);
             text-decoration: underline;
             cursor: pointer;
-            padding: 0;
-            font-size: 14px;
+            padding: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        /* Profile Section Mobile */
+        #profile {
+            width: 100%;
+            background: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+            margin: 0 auto;
+        }
+
+        #profile h2 {
+            margin: 0 0 1.5rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        .profile-info {
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-info p {
+            margin: 0.75rem 0;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .profile-info strong {
+            color: var(--dark);
+            min-width: 80px;
+            font-size: 0.9rem;
+        }
+
+        .profile-info span {
+            text-align: right;
+            font-size: 0.9rem;
+        }
+
+        #topUpBtn, #logoutBtn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            transition: var(--transition);
+            min-height: 52px;
+        }
+
+        #topUpBtn {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: var(--white);
+        }
+
+        #logoutBtn {
+            background: linear-gradient(135deg, #6c757d, #868e96);
+            color: var(--white);
+        }
+
+        /* Server Cards Mobile */
+        .servers-section {
+            margin-top: 2rem;
+        }
+
+        .servers-section h3 {
+            margin: 0 0 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .server-building-notice {
+            margin-bottom: 1rem;
+        }
+
+        .building-notice-compact {
+            background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+            border: 1px solid #ffc107;
+            border-radius: var(--border-radius-sm);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .server-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--primary);
+        }
+
+        .server-header {
+            margin-bottom: 1rem;
+        }
+
+        .server-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 0.75rem;
+        }
+
+        .server-status {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .status-on {
+            background: #28a745;
+        }
+
+        .status-off {
+            background: #dc3545;
+        }
+
+        .toggle-server-btn {
+            background: #dc3545;
+            color: var(--white);
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            min-height: 36px;
+        }
+
+        .toggle-server-btn.on {
+            background: #28a745;
+        }
+
+        .server-specs {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .spec-item:last-child {
+            border-bottom: none;
+        }
+
+        .spec-item strong {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
+        .server-credentials {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: var(--border-radius-sm);
+            margin-bottom: 1rem;
+        }
+
+        .credential-item {
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .credential-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .credential-item strong {
+            color: var(--gray);
+            font-size: 0.875rem;
+            min-width: 60px;
+        }
+
+        .copyable {
+            background: var(--white);
+            padding: 0.5rem 0.75rem;
+            border-radius: var(--border-radius-sm);
+            font-family: monospace;
+            font-size: 0.875rem;
+            cursor: pointer;
+            border: 1px solid var(--light-gray);
+            flex: 1;
+            margin-left: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .server-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .delete-server-btn {
+            background: #dc3545;
+            color: var(--white);
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
+            font-weight: 500;
+            min-height: 44px;
+        }
+
+        /* Balance History Mobile */
+        .balance-history {
+            margin-top: 2rem;
+            border-top: 1px solid var(--light-gray);
+            padding-top: 1.5rem;
+        }
+
+        .balance-history h3 {
+            margin: 0 0 1rem;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .history-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-info {
+            flex: 1;
+        }
+
+        .history-date {
+            font-size: 0.875rem;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+
+        .history-amount {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .history-amount.positive {
+            color: #28a745;
+        }
+
+        .history-status {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        /* Modal Mobile */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .modal-dialog {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            background: var(--gradient);
+            color: var(--white);
+            padding: 1.25rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-header--title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 1.5rem;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            font-size: 16px;
+            background: var(--white);
+        }
+
+        .payment-methods {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin: 1.25rem 0;
+        }
+
+        .payment-method {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid var(--light-gray);
+            border-radius: var(--border-radius-sm);
+            cursor: pointer;
             transition: var(--transition);
         }
 
-        .form-switch button:hover {
-            color: var(--primary-dark);
+        .payment-method.selected {
+            border-color: var(--primary);
+            background: #f0f8ff;
         }
 
-        /* NEW: Two-step registration */
-        .registration-step {
-            display: none;
-            animation: fadeIn 0.3s ease-in;
+        .payment-method input {
+            margin-right: 0.75rem;
         }
 
-        .registration-step.active {
+        .payment-method label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0;
+            flex: 1;
+        }
+
+        .payment-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--light);
+            border-radius: var(--border-radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 0.875rem;
+        }
+
+        .payment-details {
+            flex: 1;
+        }
+
+        .payment-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .payment-description {
+            font-size: 0.75rem;
+            color: var(--gray);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: var(--white);
+            border: none;
+            border-radius: var(--border-radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 52px;
+        }
+
+        /* Footer Mobile */
+        footer {
+            background: var(--dark);
+            color: var(--white);
+            margin-top: auto;
+        }
+
+        .footer-main {
+            padding: 2rem 0 1.5rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-about {
+            text-align: center;
+        }
+
+        .footer-logo {
+            height: 35px;
+            margin-bottom: 1rem;
+        }
+
+        .footer-description {
+            color: #aaa;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .footer-heading {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--white);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-link {
             display: block;
+            color: #aaa;
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0;
+            transition: var(--transition);
         }
+
+        .footer-contact {
+            margin-top: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: #aaa;
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            padding: 1.5rem 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        .footer-copyright {
+            color: #aaa;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+
+        .footer-policy {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-policy-link {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 0.8rem;
+        }
+
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .header-container {
+                padding: 1rem 1.5rem;
+            }
+
+            .logo {
+                height: 40px;
+            }
+
+            .nav-menu {
+                display: flex;
+                list-style: none;
+                gap: 2rem;
+                align-items: flex;
+            }
+
+            .nav-link {
+                text-decoration: none;
+                color: var(--dark);
+                font-weight: 500;
+                transition: var(--transition);
+                position: relative;
+                padding: 0.5rem 0;
+            }
+
+            .nav-link:hover {
+                color: var(--primary);
+            }
+
+            .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 0;
+                height: 2px;
+                background: var(--primary);
+                transition: var(--transition);
+            }
+
+            .nav-link:hover::after {
+                width: 100%;
+            }
+
+            .header-actions {
+                display: flex;
+                gap: 1rem;
+                align-items: center;
+            }
+
+            .user-balance {
+                display: flex;
+                align-items: center;
+                gap: 0.75rem;
+                background: var(--light);
+                padding: 0.5rem 1rem;
+                border-radius: var(--border-radius-sm);
+                border: 1px solid var(--light-gray);
+            }
+
+            .balance-amount {
+                font-weight: 600;
+                color: var(--primary);
+                font-size: 1rem;
+            }
+
+            .balance-label {
+                font-size: 0.85rem;
+                color: var(--gray);
+            }
+
+            .top-up-btn {
+                background: var(--gradient);
+                color: var(--white);
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: var(--border-radius-sm);
+                font-weight: 500;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .header-btn {
+                padding: 0.5rem 1.5rem;
+                border-radius: var(--border-radius-sm);
+                font-weight: 500;
+                text-decoration: none;
+                transition: var(--transition);
+                border: 2px solid transparent;
+            }
+
+            .header-btn-outline {
+                background: transparent;
+                color: var(--primary);
+                border-color: var(--primary);
+            }
+
+            .header-btn-primary {
+                background: var(--gradient);
+                color: var(--white);
+            }
+
+            .mobile-toggle {
+                display: none;
+            }
+
+            .page {
+                padding: 2rem 0;
+            }
+
+            .container {
+                padding: 0 1.5rem;
+            }
+
+            #loginForm, #registerForm, #recoveryForm, #profile {
+                padding: 2rem;
+            }
+
+            .server-specs {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .footer-content {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 3rem;
+                text-align: left;
+            }
+
+            .footer-about {
+                text-align: left;
+            }
+
+            .footer-policy {
+                flex-direction: row;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .server-specs {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            #profile {
+                max-width: 800px;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-1 {
+            margin-top: 0.5rem;
+        }
+
+        .mt-2 {
+            margin-top: 1rem;
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .mb-2 {
+            margin-bottom: 1rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--white);
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .notification {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            background: var(--white);
+            border-left: 4px solid var(--secondary);
+            box-shadow: var(--shadow-lg);
+            border-radius: var(--border-radius-sm);
+            padding: 1rem;
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            max-width: 300px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            border-left-color: #e74c3c;
+        }
+
+        .notification.success {
+            border-left-color: #2ecc71;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            color: var(--dark);
+        }
+
+        .notification-message {
+            color: var(--gray);
+            font-size: 0.875rem;
+        }
+
 
         .step-indicator {
             display: flex;
@@ -477,53 +1162,6 @@
             font-weight: 500;
         }
 
-        /* Password Recovery Styles */
-        .recovery-step {
-            display: none;
-            animation: fadeIn 0.3s ease-in;
-        }
-
-        .recovery-step.active {
-            display: block;
-        }
-
-        .recovery-message {
-            padding: 12px;
-            margin: 10px 0;
-            border-radius: var(--border-radius-sm);
-            text-align: center;
-            font-size: 14px;
-            font-weight: 500;
-        }
-
-        .recovery-message.success {
-            background: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .recovery-message.error {
-            background: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-
-        .recovery-message.info {
-            background: #d1ecf1;
-            color: #0c5460;
-            border: 1px solid #bee5eb;
-        }
-
-        .recovery-actions {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .recovery-actions button {
-            flex: 1;
-        }
-
         .btn-secondary {
             background: var(--gray);
             color: white;
@@ -540,624 +1178,10 @@
             transform: translateY(-2px);
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .password-requirements {
-            font-size: 12px;
-            color: var(--gray);
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        .password-strength {
-            height: 4px;
-            background: var(--light-gray);
-            border-radius: 2px;
-            margin: 5px 0;
-            overflow: hidden;
-        }
-
-        .password-strength-bar {
-            height: 100%;
-            width: 0%;
-            transition: width 0.3s, background-color 0.3s;
-        }
-
-        .password-strength.weak .password-strength-bar {
-            width: 33%;
-            background: #dc3545;
-        }
-
-        .password-strength.medium .password-strength-bar {
-            width: 66%;
-            background: #ffc107;
-        }
-
-        .password-strength.strong .password-strength-bar {
-            width: 100%;
-            background: #28a745;
-        }
-
-        /* Profile section */
-        #profile {
-            width: 80vh;
-            margin: 0 auto;
-            padding: 30px;
-            background: white;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-        }
-
-        #profile h2 {
-            margin: 0 0 20px;
-            font-size: 24px;
-            font-weight: 600;
-            color: var(--primary);
-            text-align: center;
-        }
-
-        .profile-info {
-            margin-bottom: 20px;
-        }
-
-        .profile-info p {
-            margin: 10px 0;
-            font-size: 16px;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .profile-info strong {
-            color: var(--dark);
-            min-width: 120px;
-            display: inline-block;
-        }
-
-        #topUpBtn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-sm);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 20px;
-            transition: var(--transition);
-        }
-
-        #topUpBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-        }
-
-        #logoutBtn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(135deg, #6c757d, #868e96);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-sm);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: var(--transition);
-        }
-
-        #logoutBtn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
-        }
-
-        /* NEW: Balance History */
-        .balance-history {
-            margin-top: 30px;
-            border-top: 1px solid var(--light-gray);
-            padding-top: 20px;
-        }
-
-        .balance-history h3 {
-            margin: 0 0 15px;
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .history-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .history-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-        }
-
-        .history-info {
-            display: flex;
+        .recovery-actions {
             flex-direction: column;
         }
 
-        .history-date {
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        .history-amount {
-            font-weight: 600;
-            font-size: 16px;
-        }
-
-        .history-amount.positive {
-            color: #28a745;
-        }
-
-        .history-status {
-            font-size: 12px;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-
-        .status-completed {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .status-pending {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-failed {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        /* Modal styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        .modal-dialog {
-            background: white;
-            border-radius: var(--border-radius);
-            width: 90%;
-            max-width: 500px;
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            animation: modalSlideIn 0.3s ease-out;
-        }
-
-        @keyframes modalSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px) scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        .modal-header {
-            background: var(--gradient);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .modal-header--title {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 0;
-        }
-
-        .modal-body {
-            padding: 30px;
-        }
-
-        .close {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 24px;
-            cursor: pointer;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            transition: var(--transition);
-        }
-
-        .close:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--dark);
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 12px 16px;
-            border: 2px solid var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            font-size: 16px;
-            transition: var(--transition);
-        }
-
-        .form-control:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(42, 91, 140, 0.1);
-        }
-
-        .payment-methods {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 20px 0;
-        }
-
-        .payment-method {
-            display: flex;
-            align-items: center;
-            padding: 15px;
-            border: 2px solid var(--light-gray);
-            border-radius: var(--border-radius-sm);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .payment-method:hover {
-            border-color: var(--primary);
-            background: var(--light);
-        }
-
-        .payment-method.selected {
-            border-color: var(--primary);
-            background: #f0f8ff;
-        }
-
-        .payment-method input {
-            margin-right: 12px;
-        }
-
-        .payment-method label {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            font-weight: 500;
-            margin: 0;
-            flex: 1;
-        }
-
-        .payment-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--light);
-            border-radius: var(--border-radius-sm);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 14px;
-        }
-
-        .payment-details {
-            flex: 1;
-        }
-
-        .payment-name {
-            font-weight: 600;
-            margin-bottom: 4px;
-            color: var(--dark);
-        }
-
-        .payment-description {
-            font-size: 14px;
-            color: var(--gray);
-        }
-
-        .btn-primary {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #28a745, #20c997);
-            color: white;
-            border: none;
-            border-radius: var(--border-radius-sm);
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
-        }
-
-        .btn-primary:disabled {
-            background: var(--gray);
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        /* Footer Styles */
-        footer {
-            background: var(--dark);
-            color: var(--white);
-            margin-top: auto;
-        }
-
-        .footer-main {
-            padding: 4rem 0 2rem;
-        }
-
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .footer-logo {
-            height: 40px;
-            margin-bottom: 1rem;
-        }
-
-        .footer-description {
-            color: #aaa;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-            max-width: 300px;
-        }
-
-        .footer-heading {
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            font-weight: 600;
-            color: var(--white);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-link {
-            display: block;
-            color: #aaa;
-            text-decoration: none;
-            margin-bottom: 0.75rem;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .footer-link:hover {
-            color: var(--white);
-            transform: translateX(5px);
-        }
-
-        .footer-link i {
-            width: 16px;
-            text-align: center;
-        }
-
-        .footer-bottom {
-            padding: 2rem 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
-
-        .footer-copyright {
-            color: #aaa;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-        }
-
-        .footer-policy {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            flex-wrap: wrap;
-        }
-
-        .footer-policy-link {
-            color: #aaa;
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: var(--transition);
-        }
-
-        .footer-policy-link:hover {
-            color: var(--white);
-        }
-
-        .payment-methods {
-            margin-top: 1.5rem;
-        }
-
-        .payment-methods img {
-            max-width: 250px;
-            opacity: 0.8;
-            transition: var(--transition);
-        }
-
-        .payment-methods img:hover {
-            opacity: 1;
-        }
-
-        .footer-contact {
-            margin-top: 1rem;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            margin-bottom: 0.75rem;
-            color: #aaa;
-        }
-
-        .contact-item i {
-            color: var(--secondary);
-            width: 16px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            color: #aaa;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .social-link:hover {
-            background: var(--primary);
-            color: var(--white);
-            transform: translateY(-2px);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-menu, .header-actions {
-                display: none;
-            }
-
-            .mobile-toggle {
-                display: block;
-            }
-
-            .header-container {
-                padding: 1rem;
-            }
-
-            .main-about {
-                flex-direction: column;
-                text-align: center;
-                gap: 2rem;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                text-align: center;
-            }
-
-            .footer-description {
-                margin: 0 auto 1.5rem;
-            }
-
-            .footer-policy {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .page {
-                padding: 2rem 0;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-
-            #loginForm, #registerForm, #recoveryForm, #profile {
-                padding: 20px;
-            }
-
-            .recovery-actions {
-                flex-direction: column;
-            }
-
-            /* NEW: Mobile adjustments for balance section */
-            .user-balance {
-                flex-direction: column;
-                gap: 0.5rem;
-                padding: 0.75rem;
-            }
-
-            .balance-info {
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .footer-main {
-                padding: 3rem 0 1.5rem;
-            }
-
-            .modal-dialog {
-                width: 95%;
-                margin: 10px;
-            }
-
-            .modal-body {
-                padding: 20px;
-            }
-
-            #profile {
-                width: auto;
-                margin: 0 10px;
-            }
-        }
     </style>
     <script src="https://widget.cloudpayments.ru/bundles/cloudpayments.js"></script>
 </head>
@@ -1179,7 +1203,6 @@
         </nav>
 
         <div class="header-actions">
-            <!-- NEW: User Balance Section -->
             {% if request.user.is_authenticated %}
                 <div class="user-balance">
                     <div class="balance-info">
@@ -1237,8 +1260,22 @@
     </ul>
 
     <div class="mobile-actions">
-        <a href="{% url 'contacts' %}" class="header-btn header-btn-outline">Контакты</a>
-        <a href="{% url 'profile' %}" class="header-btn header-btn-primary">
+        {% if request.user.is_authenticated %}
+            <div class="mobile-user-balance">
+                <div class="balance-amount">{{ user.balance|default:"0" }} ₽</div>
+                <div class="balance-label">Баланс</div>
+            </div>
+            <button class="mobile-top-up-btn" id="mobileTopUpBtn">
+                <i class="fas fa-plus"></i>
+                Пополнить баланс
+            </button>
+        {% endif %}
+
+        <a href="{% url 'contacts' %}" class="header-btn header-btn-outline"
+           style="width: 100%; text-align: center; margin-bottom: 0.5rem;">
+            Контакты
+        </a>
+        <a href="{% url 'profile' %}" class="header-btn header-btn-primary" style="width: 100%; text-align: center;">
             <i class="fas fa-user"></i>
             Личный кабинет
         </a>
@@ -1298,300 +1335,251 @@
     </div>
 </div>
 
+<!-- Notification -->
+<div class="notification" id="notification">
+    <div class="notification-title" id="notificationTitle">Уведомление</div>
+    <div class="notification-message" id="notificationMessage">Сообщение</div>
+</div>
 
 <main>
     <div class="page">
         <div class="container">
-            <div class="main-about">
-                {% if not request.user.is_authenticated %}
-                    <div id="authForms">
-                        <!-- Форма входа -->
-                        <form id="loginForm" method="post" {% if registration %}style="display: none;"{% endif %}>
-                            {% csrf_token %}
-                            <h3>Вход в аккаунт</h3>
-                            <input type="email" id="loginEmail" name="email" placeholder="Email" required>
-                            <input type="password" id="loginPassword" name="password" placeholder="Пароль" required>
-                            <button type="submit" class="auth-btn" name="login">Войти</button>
+            {% if not request.user.is_authenticated %}
+                <div id="authForms">
+                    <!-- Форма входа -->
+                    <form id="loginForm" method="post">
+                        {% csrf_token %}
+                        <h3>Вход в аккаунт</h3>
+                        <input type="email" id="loginEmail" name="email" placeholder="Email" required>
+                        <input type="password" id="loginPassword" name="password" placeholder="Пароль" required>
+                        <button type="submit" class="auth-btn" name="login">Войти</button>
+                        {% for error in errors %}
+                            <div class="recovery-message error">{{ error }}</div>
+                        {% endfor %}
+                        <div class="form-switch">
+                            Нет аккаунта?
+                            <button type="button" onclick="showRegisterForm()">Зарегистрироваться</button>
+                            <div class="mt-1">
+                                <button type="button" onclick="showRecoveryForm()"
+                                        style="background: none; border: none; color: var(--primary); text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px;">
+                                    Забыли пароль?
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Форма регистрации -->
+                    <form id="registerForm" method="post">
+                        {% csrf_token %}
+                        <h3>Регистрация</h3>
+
+                        <!-- Step indicator -->
+                        <div class="step-indicator">
+                            <div class="step active" id="step1-indicator">
+                                <div class="step-circle">1</div>
+                                <div class="step-label">Данные</div>
+                            </div>
+                            <div class="step" id="step2-indicator">
+                                <div class="step-circle">2</div>
+                                <div class="step-label">Подтверждение</div>
+                            </div>
+                        </div>
+
+                        <!-- Step 1: Basic info -->
+                        <div class="registration-step active" id="registerStep1">
+                            <input type="email" id="regEmail" name="email" placeholder="Email" required>
+                            <input type="password" id="regPassword" name="password"
+                                   placeholder="Пароль (мин. 6 символов)" required>
+                            <input type="text" id="firstName" name="name" placeholder="Имя">
+                            <input type="text" id="lastName" name="surname" placeholder="Фамилия">
+                            <input type="tel" id="phone" name="phone" placeholder="Телефон (опционально)">
+
+                            <button type="button" class="auth-btn" onclick="proceedToStep2()">Продолжить</button>
                             {% for error in errors %}
                                 <div class="recovery-message">{{ error }}</div> {% endfor %}
                             <div class="form-switch">
-                                Нет аккаунта?
-                                <button type="button" onclick="showRegisterForm()">Зарегистрироваться</button>
-                                <div style="margin-top: 10px;">
-                                    <button type="button" onclick="showRecoveryForm()"
-                                            style="background: none; border: none; color: var(--primary); text-decoration: underline; cursor: pointer; padding: 0; font-size: 14px;">
-                                        Забыли пароль?
-                                    </button>
-                                </div>
+                                Уже есть аккаунт?
+                                <button type="button" onclick="showLoginForm()">Войти</button>
                             </div>
-                        </form>
-
-                        <!-- NEW: Two-step registration form -->
-                        <form id="registerForm" method="post"
-                              {% if not registration %}style="display: none;"{% endif %}>
-                            {% csrf_token %}
-                            <h3>Регистрация</h3>
-
-                            <!-- Step indicator -->
-                            <div class="step-indicator">
-                                <div class="step active" id="step1-indicator">
-                                    <div class="step-circle">1</div>
-                                    <div class="step-label">Данные</div>
-                                </div>
-                                <div class="step" id="step2-indicator">
-                                    <div class="step-circle">2</div>
-                                    <div class="step-label">Подтверждение</div>
-                                </div>
-                            </div>
-
-                            <!-- Step 1: Basic info -->
-                            <div class="registration-step active" id="registerStep1">
-                                <input type="text" id="firstName" name="name" placeholder="Имя" required>
-                                <input type="text" id="lastName" name="surname" placeholder="Фамилия" required>
-                                <input type="email" id="regEmail" name="email" placeholder="Email" required>
-                                <input type="tel" id="phone" name="phone" placeholder="Телефон (опционально)">
-                                <input type="password" id="regPassword" name="password"
-                                       placeholder="Пароль (мин. 6 символов)" required>
-                                <button type="button" class="auth-btn" onclick="proceedToStep2()">Продолжить
-                                </button>
-                                {% for error in errors %}
-                                    <div class="recovery-message">{{ error }}</div> {% endfor %}
-                                <div class="form-switch">
-                                    Уже есть аккаунт?
-                                    <button type="button" onclick="showLoginForm()">Войти</button>
-                                </div>
-                            </div>
-
-                            <!-- Step 2: Email confirmation -->
-                            <div class="registration-step" id="registerStep2">
-                                <p class="recovery-message info">На вашу почту отправлен код подтверждения</p>
-                                <input type="text" id="confirmationCode" name="code"
-                                       placeholder="Введите код из письма"
-                                       required maxlength="6">
-                                <div class="recovery-actions">
-                                    <button type="button" class="btn-secondary" onclick="showRegistrationStep(1)">
-                                        Назад
-                                    </button>
-                                    <button type="submit" class="auth-btn" name="registration">Завершить
-                                        регистрацию
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
-                        <form method="post">
-                            {% csrf_token %}
-                            <div id="recoveryForm" style="display: none;">
-                                <!-- Этап 1: Ввод почты -->
-                                <div class="recovery-step active" id="step1">
-                                    <h3>Восстановление пароля</h3>
-                                    <p class="recovery-message info">Введите email вашей учетной записи</p>
-                                    <input type="email" id="recoveryEmail" name="email" placeholder="Email"
-                                           required>
-                                    <div class="recovery-actions">
-                                        <button type="button" class="btn-secondary" onclick="showLoginForm()">Назад
-                                        </button>
-                                        <button type="button" class="auth-btn" onclick="startRecovery()">
-                                            Восстановить
-                                            пароль
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Этап 2: Ввод кода -->
-                                <div class="recovery-step" id="step2">
-                                    <h3>Проверка кода</h3>
-                                    <p class="recovery-message info">На вашу почту отправлен код подтверждения</p>
-                                    <input type="text" id="recoveryCode" placeholder="Введите код из письма"
-                                           required
-                                           maxlength="6">
-                                    <div class="recovery-actions">
-                                        <button type="button" class="btn-secondary" onclick="backToStep1()">Назад
-                                        </button>
-                                        <button type="button" class="auth-btn" onclick="verifyRecoveryCode()">
-                                            Проверить
-                                            код
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <!-- Этап 3: Ввод нового пароля -->
-                                <div class="recovery-step" id="step3">
-                                    <h3>Новый пароль</h3>
-                                    <p class="recovery-message info">Введите новый пароль для вашей учетной
-                                        записи</p>
-                                    <input type="password" id="newPassword" name="password"
-                                           placeholder="Новый пароль" required>
-                                    <div class="password-strength">
-                                        <div class="password-strength-bar"></div>
-                                    </div>
-                                    <p class="password-requirements">Пароль должен содержать минимум 6 символов</p>
-                                    <input type="password" id="confirmPassword" placeholder="Повторите пароль"
-                                           required>
-                                    <div class="recovery-actions">
-                                        <button type="button" class="btn-secondary" onclick="backToStep2()">Назад
-                                        </button>
-                                        <button type="submit" class="auth-btn" name="recovery_password">Сменить
-                                            пароль
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                {% else %}
-                    <div id="profile">
-                        <h2>Ваш профиль</h2>
-                        <div class="profile-info">
-                            <p><strong>Имя:</strong> <span
-                                    id="profileFirstName">{{ user.name|default:"—" }}</span></p>
-                            <p><strong>Фамилия:</strong> <span
-                                    id="profileLastName">{{ user.surname|default:"—" }}</span></p>
-                            <p><strong>Email:</strong> <span id="profileEmail">{{ user.email }}</span></p>
-                            <p><strong>Телефон:</strong> <span
-                                    id="profilePhone">{{ user.phone|default:"Не указан" }}</span></p>
-                            <p><strong>Баланс:</strong> <span
-                                    id="profileBalance">{{ user.balance|default:"0" }}</span>
-                                ₽</p>
                         </div>
 
-                        <button id="topUpBtn">Пополнить баланс</button>
-                        <button id="logoutBtn">Выйти</button>
-                        <!-- Список серверов -->
-                        <div class="servers-section" style="margin-top: 30px;">
-                            <h3 style="margin-bottom: 20px; color: var(--primary);">Ваши серверы</h3>
-                            <div class="servers-list" id="serversList">
-                                {% for server in servers %}
-                                    <div class="server-card" data-server-id="{{ server.id }}"
-                                         style="background: white; border-radius: var(--border-radius); padding: 20px; margin-bottom: 15px; box-shadow: var(--shadow); border-left: 4px solid var(--primary);">
-                                        <div class="server-header"
-                                             style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                            <div class="server-name"
-                                                 style="font-size: 18px; font-weight: 600; color: var(--dark);">
-                                                {{ server.name }}
-                                            </div>
-                                            {% if server.is_power_on %}
-                                                <div class="server-status"
-                                                     style="display: flex; align-items: center; gap: 12px;">
-                                                    <div class="status-indicator"
-                                                         style="width: 12px; height: 12px; border-radius: 50%; background: #28a745;"></div>
-                                                    <span style="color: #28a745; font-weight: 500;">Включен</span>
-                                                    <button class="toggle-server-btn"
-                                                            data-server-id="{{ server.id }}"
-                                                            data-current-status="on"
-                                                            style="background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 12px; font-weight: 500; transition: var(--transition);"
-                                                            onclick="toggleServer('{{ server.id }}', 'off')">
-                                                        Выключить
-                                                    </button>
-                                                </div>
-                                            {% else %}
-                                                <div class="server-status"
-                                                     style="display: flex; align-items: center; gap: 12px;">
-                                                    <div class="status-indicator"
-                                                         style="width: 12px; height: 12px; border-radius: 50%; background: #dc3545;"></div>
-                                                    <span style="color: #dc3545; font-weight: 500;">Выключен</span>
-                                                    <button class="toggle-server-btn"
-                                                            data-server-id="{{ server.id }}"
-                                                            data-current-status="off"
-                                                            style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: var(--border-radius-sm); cursor: pointer; font-size: 12px; font-weight: 500; transition: var(--transition);"
-                                                            onclick="toggleServer('{{ server.id }}', 'on')">
-                                                        Включить
-                                                    </button>
-                                                </div>
-                                            {% endif %}
-                                        </div>
+                        <!-- Step 2: Email confirmation -->
+                        <div class="registration-step" id="registerStep2" style="display: none;">
+                            <p class="recovery-message info">На вашу почту отправлен код подтверждения</p>
+                            <input type="text" id="confirmationCode" name="code" placeholder="Введите код из письма"
+                                   required
+                                   maxlength="6">
+                            <div class="recovery-actions">
+                                <button type="button" class="btn-secondary" onclick="showRegistrationStep(1)">Назад
+                                </button>
+                                <button type="submit" class="auth-btn" name="registration">Завершить регистрацию
+                                </button>
+                            </div>
+                        </div>
+                    </form>
 
-                                        <div class="server-specs"
-                                             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px;">
-                                            <div class="spec-item">
-                                                <strong style="color: var(--gray);">Локация:</strong>
-                                                <span>{{ server.location_id }}</span>
-                                            </div>
-                                            <div class="spec-item">
-                                                <strong style="color: var(--gray);">ОС:</strong>
-                                                <span>{{ server.image_id }}</span>
-                                            </div>
-                                            <div class="spec-item">
-                                                <strong style="color: var(--gray);">Ядра:</strong>
-                                                <span>{{ server.cpu }}CPU</span>
-                                            </div>
-                                            <div class="spec-item">
-                                                <strong style="color: var(--gray);">ОЗУ:</strong>
-                                                <span>{{ server.ram_mb }} GB</span>
-                                            </div>
-                                            <div class="spec-item">
-                                                <strong style="color: var(--gray);">Диск:</strong>
-                                                {% for volume in server.volumes %}
-                                                    <span>{{ volume.size_mb }} GB SSD</span>
-                                                {% endfor %}
-                                            </div>
-                                        </div>
-                                        {% for nics in server.nics %}
-                                            <div class="server-credentials"
-                                                 style="background: var(--light-gray); padding: 15px; border-radius: var(--border-radius-sm); margin-bottom: 15px;">
-                                                <div class="ip-address">
-                                                    <strong style="color: var(--gray);">IP адрес:</strong>
-                                                    <span onclick="copyToClipboard('{{ nics.ip_address }}')">
-                                {{ nics.ip_address }} <i class="fas fa-copy"></i>
-                            </span>
-                                                </div>
-                                                <div class="password"
-                                                     style="display: flex; align-items: center; gap: 10px;">
-                                                    <strong style="color: var(--gray);">Пароль:</strong>
-                                                    <span style="font-family: monospace; background: white; padding: 4px 8px; border-radius: 4px; flex: 1;"
-                                                          onclick="copyToClipboard('{{ server.password }}')">
-                                •••••••••• <i class="fas fa-copy"></i>
-                            </span>
-                                                </div>
-                                                <div class="ip-address" style="margin-bottom: 10px;">
-                                                    <strong style="color: var(--gray);">SSH:</strong>
-                                                    <span style="font-family: monospace; padding: 4px 8px; border-radius: 4px; margin-left: 8px;"
-                                                          onclick="copyToClipboard('ssh root@{{ nics.ip_address }}')">
-                                ssh root@192.168.1.101 <i class="fas fa-copy"></i>
-                            </span>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                        <div class="server-actions"
-                                             style="display: flex; justify-content: flex-end;">
-                                            <button class="delete-server-btn"
-                                                    style="background: #dc3545; color: white; border: none; padding: 8px 16px; border-radius: var(--border-radius-sm); cursor: pointer; font-weight: 500; transition: var(--transition);"
-                                                    onclick="deleteServer('{{ server.id }}')">
-                                                Удалить сервер
+                    <!-- Форма восстановления пароля -->
+                    <form id="recoveryForm" method="post" style="display: none;">
+                        {% csrf_token %}
+                        <h3>Восстановление пароля</h3>
+                        <input type="email" id="recoveryEmail" name="email" placeholder="Email" required>
+                        <button type="submit" class="auth-btn" name="recovery">Восстановить пароль</button>
+                        <div class="form-switch">
+                            <button type="button" onclick="showLoginForm()">Вернуться к входу</button>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <div id="profile">
+                    <h2>Ваш профиль</h2>
+                    <div class="profile-info">
+                        <p><strong>Имя:</strong> <span id="profileFirstName">{{ user.name|default:"—" }}</span></p>
+                        <p><strong>Фамилия:</strong> <span id="profileLastName">{{ user.surname|default:"—" }}</span>
+                        </p>
+                        <p><strong>Email:</strong> <span id="profileEmail">{{ user.email }}</span></p>
+                        <p><strong>Телефон:</strong> <span id="profilePhone">{{ user.phone|default:"Не указан" }}</span>
+                        </p>
+                        <p><strong>Баланс:</strong> <span id="profileBalance">{{ user.balance|default:"0" }}</span> ₽
+                        </p>
+                    </div>
+
+                    <button id="topUpBtn">Пополнить баланс</button>
+                    <button id="logoutBtn">Выйти</button>
+
+                    <!-- Список серверов -->
+                    <div class="servers-section">
+                        <h3>Ваши серверы</h3>
+
+                        {% if request.user.collect_server != 0 %}
+                            <div class="server-building-notice">
+                                <div class="building-notice-compact">
+                                    <i class="fas fa-cog fa-spin" style="color: #856404;"></i>
+                                    <span style="font-weight: 500; color: #856404;">
+                                        Собирается <span id="buildingCount"
+                                                         style="font-weight: 600;">{{ request.user.collect_server }}</span> серверов
+                                    </span>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <div class="servers-list" id="serversList">
+                            {% for server in servers %}
+                                <div class="server-card" data-server-id="{{ server.id }}">
+                                    <div class="server-header">
+                                        <div class="server-name">{{ server.name }}</div>
+                                        <div class="server-status">
+                                            <div class="status-indicator {% if server.is_power_on %}status-on{% else %}status-off{% endif %}"></div>
+                                            <span style="color: {% if server.is_power_on %}#28a745{% else %}#dc3545{% endif %}; font-weight: 500;">
+                                                {% if server.is_power_on %}Включен{% else %}Выключен{% endif %}
+                                            </span>
+                                            <button class="toggle-server-btn {% if server.is_power_on %}on{% endif %}"
+                                                    data-server-id="{{ server.id }}"
+                                                    onclick="toggleServer('{{ server.id }}', '{% if server.is_power_on %}off{% else %}on{% endif %}')">
+                                                {% if server.is_power_on %}Выключить{% else %}Включить{% endif %}
                                             </button>
                                         </div>
                                     </div>
-                                {% endfor %}
 
-                            </div>
-                        </div>
-                        <div class="balance-history">
-                            <h3>История пополнений</h3>
-                        {% if request.user.history.all %}
-                            {% for history in request.user.history.all %}
-                            <div class="history-item">
-                                    <div class="history-info">
-                                        <div class="history-date">{{ history.format_datetime_russian }}</div>
-                                        <div class="history-amount positive">+{{ history.format_amount }} ₽</div>
+                                    <div class="server-specs">
+                                        <div class="spec-item">
+                                            <strong>Локация:</strong>
+                                            <span>{{ server.location_id }}</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <strong>ОС:</strong>
+                                            <span>{{ server.image_id }}</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <strong>Ядра:</strong>
+                                            <span>{{ server.cpu }} CPU</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <strong>ОЗУ:</strong>
+                                            <span>{{ server.ram_mb }}</span>
+                                        </div>
+                                        <div class="spec-item">
+                                            <strong>Диск:</strong>
+                                            {% for volume in server.volumes %}
+                                                <span>{{ volume.size_mb }} SSD</span>
+                                            {% endfor %}
+                                        </div>
                                     </div>
-                                    <div class="history-status status-completed">Завершено</div>
+
+                                    {% for nics in server.nics %}
+                                        <div class="server-credentials">
+                                            <div class="credential-item">
+                                                <strong>IP адрес:</strong>
+                                                <div class="copyable"
+                                                     onclick="copyToClipboard('{{ nics.ip_address }}')">
+                                                    {{ nics.ip_address }}
+                                                    <i class="fas fa-copy"></i>
+                                                </div>
+                                            </div>
+                                            <div class="credential-item">
+                                                <strong>Логин:</strong>
+                                                <div class="copyable" onclick="copyToClipboard('{{ server.login }}')">
+                                                    {{ server.login }}
+                                                    <i class="fas fa-copy"></i>
+                                                </div>
+                                            </div>
+                                            <div class="credential-item">
+                                                <strong>Пароль:</strong>
+                                                <div class="copyable"
+                                                     onclick="copyToClipboard('{{ server.password }}')">
+                                                    ••••••••••
+                                                    <i class="fas fa-copy"></i>
+                                                </div>
+                                            </div>
+                                            <div class="credential-item">
+                                                <strong>SSH:</strong>
+                                                <div class="copyable"
+                                                     onclick="copyToClipboard('ssh {{ server.login }}@{{ nics.ip_address }}')">
+                                                    ssh {{ server.login }}@{{ nics.ip_address }}
+                                                    <i class="fas fa-copy"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                    <div class="server-actions">
+                                        <button class="delete-server-btn" onclick="deleteServer('{{ server.id }}')">
+                                            Удалить сервер
+                                        </button>
+                                    </div>
+                                </div>
+                            {% empty %}
+                                <div class="text-center" style="padding: 2rem; color: var(--gray);">
+                                    <i class="fas fa-server"
+                                       style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                                    <p>У вас пока нет серверов</p>
                                 </div>
                             {% endfor %}
-                            <div class="history-list" id="balanceHistory">
-                                {% else %}
-                                <div id="emptyHistory"
-                                     style="display: none; text-align: center; padding: 20px; color: var(--gray);">
-                                    <i class="fas fa-history" style="font-size: 48px; margin-bottom: 10px;"></i>
+                        </div>
+                    </div>
+
+                    <!-- История пополнений -->
+                    <div class="balance-history">
+                        <h3>История пополнений</h3>
+                        <div class="history-list" id="balanceHistory">
+                            {% if request.user.history.all %}
+                                {% for history in request.user.history.all %}
+                                    <div class="history-item">
+                                        <div class="history-info">
+                                            <div class="history-date">{{ history.format_datetime_russian }}</div>
+                                            <div class="history-amount positive">+{{ history.format_amount }} ₽</div>
+                                        </div>
+                                        <div class="history-status status-completed">Завершено</div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="text-center" style="padding: 1rem; color: var(--gray);">
                                     <p>История пополнений пуста</p>
                                 </div>
-                            </div>
                             {% endif %}
                         </div>
-
                     </div>
-                {% endif %}
-
-            </div>
+                </div>
+            {% endif %}
         </div>
     </div>
 </main>
@@ -1607,55 +1595,26 @@
                         для бизнеса любого масштаба с 2024 года.
                     </p>
                     <div class="payment-methods">
-                        <img src="{% static 'image/visa_master_mir_union.png' %}" alt="Принимаемые платежные системы">
+                        <img src="{% static 'image/visa_master_mir_union.png' %}" alt="Принимаемые платежные системы"
+                             style="max-width: 200px;">
                     </div>
                 </div>
 
                 <div class="footer-links-container">
                     <h3 class="footer-heading">Услуги</h3>
                     <ul class="footer-links">
-                        <li>
-                            <a href="{% url 'gpu_servers' %}" class="footer-link">
-                                <i class="fas fa-microchip"></i>
-                                Аренда GPU серверов
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'servers' %}" class="footer-link">
-                                <i class="fas fa-cloud"></i>
-                                Частное облако VStack
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'configurator' %}" class="footer-link">
-                                <i class="fas fa-cogs"></i>
-                                Конфигуратор серверов
-                            </a>
-                        </li>
+                        <li><a href="{% url 'gpu_servers' %}" class="footer-link">Аренда GPU серверов</a></li>
+                        <li><a href="{% url 'servers' %}" class="footer-link">Частное облако VStack</a></li>
+                        <li><a href="{% url 'configurator' %}" class="footer-link">Конфигуратор серверов</a></li>
                     </ul>
                 </div>
 
                 <div class="footer-links-container">
                     <h3 class="footer-heading">Компания</h3>
                     <ul class="footer-links">
-                        <li>
-                            <a href="{% url 'about_us' %}" class="footer-link">
-                                <i class="fas fa-info-circle"></i>
-                                О компании
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'contacts' %}" class="footer-link">
-                                <i class="fas fa-map-marker-alt"></i>
-                                Контакты
-                            </a>
-                        </li>
-                        <li>
-                            <a href="{% url 'profile' %}" class="footer-link">
-                                <i class="fas fa-user"></i>
-                                Личный кабинет
-                            </a>
-                        </li>
+                        <li><a href="{% url 'about_us' %}" class="footer-link">О компании</a></li>
+                        <li><a href="{% url 'contacts' %}" class="footer-link">Контакты</a></li>
+                        <li><a href="{% url 'profile' %}" class="footer-link">Личный кабинет</a></li>
                     </ul>
                 </div>
 
@@ -1675,17 +1634,6 @@
                             <span>Круглосуточная поддержка</span>
                         </div>
                     </div>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-vk"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1703,10 +1651,15 @@
     </div>
 </footer>
 
-<!-- Код только для неавторизованных пользователей -->
 {% if not user.is_authenticated %}
     <script>
-        // Переменные для восстановления пароля
+        document.addEventListener('DOMContentLoaded', function () {
+            if ('{{ registration }}'==='False') {
+                showLoginForm();
+            } else {
+                showRegisterForm(1);
+            }
+        });
         let recoveryData = {
             email: '',
             code: ''
@@ -1776,20 +1729,6 @@
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
 
-            if (!firstName || !lastName || !email || !password) {
-                alert('Пожалуйста, заполните все обязательные поля');
-                return;
-            }
-
-            if (!isValidEmail(email)) {
-                alert('Пожалуйста, введите корректный email');
-                return;
-            }
-
-            if (password.length < 6) {
-                alert('Пароль должен содержать минимум 6 символов');
-                return;
-            }
 
             // In a real application, you would send the data to the server here
             // and only proceed if the email is available
@@ -1799,7 +1738,7 @@
 
             // Simulate sending confirmation code
             // In a real app, this would be an API call to your backend
-            fetch('{% url 'password_recovery' %}', {
+            fetch('{% url 'email_verify' %}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1813,7 +1752,7 @@
                     } else if (response.status === 400) {
                         showRecoveryMessage('Почта не найдена', 'error');
                         setTimeout(() => {
-                            backToStep1();
+                            backToStepReg1();
                         }, 1500);
                     } else {
                         showRecoveryMessage('Ошибка сервера', 'error');
@@ -1825,7 +1764,7 @@
                 });
         }
 
-        function backToStep1() {
+        function backToStepReg1() {
             showRegistrationStep(1);
         }
 
@@ -2399,5 +2338,460 @@
         }
     </script>
 {% endif %}
+<script>
+    // ========== MOBILE-SPECIFIC FUNCTIONALITY ==========
+    document.addEventListener('DOMContentLoaded', function () {
+        // Mobile menu functionality
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuClose = document.getElementById('mobileMenuClose');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+
+        function openMobileMenu() {
+            mobileMenu.classList.add('active');
+            mobileOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+            // Добавляем анимацию появления
+            setTimeout(() => {
+                mobileMenu.style.transform = 'translateX(0)';
+            }, 10);
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                mobileMenu.classList.remove('active');
+                mobileOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }, 300);
+        }
+
+        // Обработчики мобильного меню
+        if (mobileToggle) {
+            mobileToggle.addEventListener('click', openMobileMenu);
+        }
+
+        if (mobileMenuClose) {
+            mobileMenuClose.addEventListener('click', closeMobileMenu);
+        }
+
+        if (mobileOverlay) {
+            mobileOverlay.addEventListener('click', closeMobileMenu);
+        }
+
+        // Закрытие мобильного меню при клике на ссылки
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
+        });
+
+        // ========== TOUCH OPTIMIZATIONS ==========
+        if ('ontouchstart' in window) {
+            // Улучшение touch targets для мобильных устройств
+            document.querySelectorAll('button, .header-btn, .auth-btn, .toggle-server-btn, .delete-server-btn, .copyable').forEach(element => {
+                element.style.minHeight = '44px';
+                element.style.padding = '12px 16px';
+            });
+
+            // Улучшение для инпутов
+            document.querySelectorAll('input, select, textarea').forEach(input => {
+                input.style.minHeight = '44px';
+                input.style.padding = '12px 16px';
+            });
+
+            // Предотвращение выделения текста на интерактивных элементах
+            document.querySelectorAll('.server-card, .payment-method, .option-card').forEach(element => {
+                element.style.webkitUserSelect = 'none';
+                element.style.userSelect = 'none';
+                element.style.webkitTapHighlightColor = 'transparent';
+            });
+
+            // Улучшение скролла на мобильных
+            document.querySelectorAll('.history-list, .servers-list').forEach(container => {
+                container.style.webkitOverflowScrolling = 'touch';
+            });
+        }
+
+        // ========== IOS ZOOM PREVENTION ==========
+        document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"], input[type="tel"], input[type="number"]').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.style.fontSize = '16px';
+            });
+
+            input.addEventListener('blur', function () {
+                if (window.innerWidth >= 768) {
+                    this.style.fontSize = '';
+                }
+            });
+        });
+
+        // ========== MOBILE-SPECIFIC LAYOUT ADJUSTMENTS ==========
+        function adjustLayoutForMobile() {
+            const isMobile = window.innerWidth < 768;
+
+            // Настройки для серверных карточек
+            document.querySelectorAll('.server-card').forEach(card => {
+                const specs = card.querySelector('.server-specs');
+                const status = card.querySelector('.server-status');
+                const header = card.querySelector('.server-header');
+
+                if (isMobile) {
+                    // Вертикальное расположение для мобильных
+                    if (specs) {
+                        specs.style.gridTemplateColumns = '1fr';
+                        specs.style.gap = '12px';
+                    }
+                    if (status) {
+                        status.style.flexDirection = 'column';
+                        status.style.alignItems = 'stretch';
+                        status.style.gap = '8px';
+                    }
+                    if (header) {
+                        header.style.flexDirection = 'column';
+                        header.style.alignItems = 'flex-start';
+                        header.style.gap = '12px';
+                    }
+
+                    // Полноширинные кнопки на мобильных
+                    card.querySelectorAll('.toggle-server-btn, .delete-server-btn').forEach(btn => {
+                        btn.style.width = '100%';
+                        btn.style.justifyContent = 'center';
+                    });
+                } else {
+                    // Восстановление десктопного вида
+                    if (specs) {
+                        specs.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+                        specs.style.gap = '15px';
+                    }
+                    if (status) {
+                        status.style.flexDirection = 'row';
+                        status.style.alignItems = 'center';
+                        status.style.gap = '12px';
+                    }
+                    if (header) {
+                        header.style.flexDirection = 'row';
+                        header.style.alignItems = 'center';
+                        header.style.gap = '0';
+                    }
+
+                    // Автоматическая ширина кнопок на десктопе
+                    card.querySelectorAll('.toggle-server-btn, .delete-server-btn').forEach(btn => {
+                        btn.style.width = 'auto';
+                    });
+                }
+            });
+
+            // Настройки для модальных окон
+            const modal = document.getElementById('topUpModal');
+            if (modal && isMobile) {
+                modal.style.padding = '10px';
+                modal.querySelector('.modal-dialog').style.maxHeight = '90vh';
+                modal.querySelector('.modal-dialog').style.overflowY = 'auto';
+            }
+
+            // Настройки для форм аутентификации
+            document.querySelectorAll('#loginForm, #registerForm, #recoveryForm').forEach(form => {
+                if (isMobile) {
+                    form.style.padding = '20px 15px';
+                    form.style.margin = '10px';
+                } else {
+                    form.style.padding = '';
+                    form.style.margin = '';
+                }
+            });
+
+            // Настройки для профиля
+            const profile = document.getElementById('profile');
+            if (profile && isMobile) {
+                profile.style.padding = '15px';
+                profile.style.margin = '0 10px';
+
+                // Вертикальное расположение информации профиля
+                profile.querySelectorAll('.profile-info p').forEach(p => {
+                    p.style.flexDirection = 'column';
+                    p.style.alignItems = 'flex-start';
+                    p.style.gap = '5px';
+                });
+            }
+        }
+
+        // Вызов при загрузке и изменении размера окна
+        adjustLayoutForMobile();
+        window.addEventListener('resize', adjustLayoutForMobile);
+
+        // ========== MOBILE-SPECIFIC INTERACTIONS ==========
+
+        // Swipe для закрытия мобильного меню
+        let startX = 0;
+        let currentX = 0;
+
+        if (mobileMenu) {
+            mobileMenu.addEventListener('touchstart', function (e) {
+                startX = e.touches[0].clientX;
+            });
+
+            mobileMenu.addEventListener('touchmove', function (e) {
+                currentX = e.touches[0].clientX;
+                const diff = startX - currentX;
+
+                if (diff > 50) { // Swipe left to close
+                    closeMobileMenu();
+                }
+            });
+        }
+
+        // Закрытие модальных окон при свайпе вниз
+        const modal = document.getElementById('topUpModal');
+        if (modal) {
+            let startY = 0;
+
+            modal.addEventListener('touchstart', function (e) {
+                startY = e.touches[0].clientY;
+            });
+
+            modal.addEventListener('touchmove', function (e) {
+                const currentY = e.touches[0].clientY;
+                const diff = currentY - startY;
+
+                if (diff > 100 && e.target === modal) { // Swipe down to close
+                    modal.style.display = 'none';
+                    document.body.style.overflow = '';
+                }
+            });
+        }
+
+        // ========== MOBILE PERFORMANCE OPTIMIZATIONS ==========
+
+        // Отложенная загрузка изображений
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                        }
+                        observer.unobserve(img);
+                    }
+                });
+            });
+
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+
+        // Предотвращение множественных быстрых кликов
+        function createClickDebouncer(timeout = 1000) {
+            let lastClickTime = 0;
+            return function (callback) {
+                const now = Date.now();
+                if (now - lastClickTime > timeout) {
+                    lastClickTime = now;
+                    callback();
+                }
+            };
+        }
+
+        const debouncedClick = createClickDebouncer();
+
+        // Применяем к важным действиям
+        document.querySelectorAll('.toggle-server-btn, .delete-server-btn, #topUpBtn, #logoutBtn').forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const originalHandler = this.onclick;
+                if (originalHandler) {
+                    e.preventDefault();
+                    debouncedClick(() => {
+                        originalHandler.call(this, e);
+                    });
+                }
+            });
+        });
+
+        // ========== MOBILE NOTIFICATION OPTIMIZATIONS ==========
+        function showMobileNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `mobile-notification ${type}`;
+            notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-100px);
+            background: ${type === 'success' ? '#28a745' : '#dc3545'};
+            color: white;
+            padding: 16px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            text-align: center;
+            z-index: 10000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+            max-width: calc(100vw - 40px);
+            word-wrap: break-word;
+            font-size: 14px;
+        `;
+
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            // Анимация появления
+            setTimeout(() => {
+                notification.style.transform = 'translateX(-50%) translateY(0)';
+            }, 100);
+
+            // Автоматическое скрытие
+            setTimeout(() => {
+                notification.style.transform = 'translateX(-50%) translateY(-100px)';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Переопределяем стандартную функцию уведомлений для мобильных
+        if (window.innerWidth < 768) {
+            window.showNotification = showMobileNotification;
+        }
+
+        // ========== MOBILE FORM OPTIMIZATIONS ==========
+
+        // Автоматическое скрытие клавиатуры после отправки формы
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                // Даем время на обработку перед скрытием клавиатуры
+                setTimeout(() => {
+                    document.activeElement.blur();
+                }, 100);
+            });
+        });
+
+        // Улучшение выбора даты на мобильных
+        document.querySelectorAll('input[type="date"]').forEach(input => {
+            input.addEventListener('focus', function () {
+                this.style.fontSize = '16px'; // Предотвращает зум на iOS
+            });
+        });
+
+        // ========== MOBILE BATTERY OPTIMIZATIONS ==========
+
+        // Снижение частоты анимаций при низком заряде батареи
+        if ('getBattery' in navigator) {
+            navigator.getBattery().then(function (battery) {
+                if (battery.level < 0.2) {
+                    // Уменьшаем сложность анимаций
+                    document.documentElement.style.setProperty('--transition', 'all 0.1s ease');
+                }
+            });
+        }
+
+        // Оптимизация для медленных сетей
+        if ('connection' in navigator) {
+            const connection = navigator.connection;
+            if (connection.saveData || connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
+                // Отключаем тяжелые анимации
+                document.documentElement.style.setProperty('--transition', 'all 0.1s ease');
+
+                // Отключаем ненужные визуальные эффекты
+                document.querySelectorAll('.server-card, .option-card').forEach(card => {
+                    card.style.boxShadow = 'none';
+                    card.style.transition = 'none';
+                });
+            }
+        }
+    });
+
+    // ========== MOBILE-ONLY UTILITY FUNCTIONS ==========
+
+    // Функция для определения типа устройства
+    function isMobileDevice() {
+        return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+            window.innerWidth < 768;
+    }
+
+    // Функция для определения ориентации устройства
+    function getDeviceOrientation() {
+        return window.innerHeight > window.innerWidth ? 'portrait' : 'landscape';
+    }
+
+    // Адаптивная функция копирования для мобильных
+    function mobileCopyToClipboard(text) {
+        if (isMobileDevice()) {
+            // Используем упрощенный метод для мобильных
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+
+            try {
+                document.execCommand('copy');
+                showMobileNotification('Скопировано', 'success');
+            } catch (err) {
+                showMobileNotification('Ошибка копирования', 'error');
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        } else {
+            // Стандартный метод для десктопа
+            copyToClipboard(text);
+        }
+    }
+
+    // Функция для безопасного скролла на мобильных
+    function smoothScrollTo(element, duration = 300) {
+        if (!isMobileDevice()) {
+            element.scrollIntoView({behavior: 'smooth'});
+            return;
+        }
+
+        const targetPosition = element.getBoundingClientRect().top + window.pageYOffset;
+        const startPosition = window.pageYOffset;
+        const distance = targetPosition - startPosition;
+        let startTime = null;
+
+        function animation(currentTime) {
+            if (startTime === null) startTime = currentTime;
+            const timeElapsed = currentTime - startTime;
+            const run = easeInOutQuad(timeElapsed, startPosition, distance, duration);
+            window.scrollTo(0, run);
+            if (timeElapsed < duration) requestAnimationFrame(animation);
+        }
+
+        function easeInOutQuad(t, b, c, d) {
+            t /= d / 2;
+            if (t < 1) return c / 2 * t * t + b;
+            t--;
+            return -c / 2 * (t * (t - 2) - 1) + b;
+        }
+
+        requestAnimationFrame(animation);
+    }
+
+    // Инициализация мобильных событий при загрузке
+    if (isMobileDevice()) {
+        document.addEventListener('DOMContentLoaded', function () {
+            // Добавляем класс для мобильных стилей
+            document.body.classList.add('mobile-device');
+
+            // Оптимизация для разных ориентаций
+            const orientation = getDeviceOrientation();
+            document.body.classList.add(orientation === 'portrait' ? 'portrait' : 'landscape');
+
+            // Обработчик изменения ориентации
+            window.addEventListener('orientationchange', function () {
+                setTimeout(() => {
+                    const newOrientation = getDeviceOrientation();
+                    document.body.classList.remove('portrait', 'landscape');
+                    document.body.classList.add(newOrientation);
+                    adjustLayoutForMobile();
+                }, 300);
+            });
+        });
+    }
+</script>
 </body>
 </html>

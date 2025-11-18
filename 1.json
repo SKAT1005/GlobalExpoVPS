@@ -1,74 +1,263 @@
-[
-  {
-    'id': 'l44s1223586',
-    'location_id': 'ds1',
-    'cpu': 1,
-    'ram_mb': 1024,
-    'volumes': [
-      {
-        'id': 104659,
-        'name': 'boot',
-        'size_mb': 51200,
-        'created': '2025-11-14T19:00:00.681762Z'
-      }
-    ],
-    'nics': [
-      {
-        'id': 108317,
-        'network_id': 'l44n168',
-        'network_type': 'PublicShared',
-        'mac': 'ca:0b:ae:86:49:8d',
-        'ip_address': '93.183.74.41',
-        'mask': 24,
-        'gateway': '93.183.74.1/24',
-        'bandwidth_mbps': 50
-      }
-    ],
-    'image_id': 'Ubuntu-24.04.2-X64',
-    'is_power_on': True,
-    'name': 'c2xhdmF0dWtpbkBtYWlsLnJ1XzE3NjMxNDY3ODM',
-    'login': 'root',
-    'password': 'c6eP0ZzI3ETakc8S',
-    'ssh_key_ids': [],
-    'state': 'Active',
-    'created': '2025-11-14T19:00:00.918908Z',
-    'tags': [],
-    'application_ids': []
-  },
-  {
-    'id': 'l44s1223587',
-    'location_id': 'ds1',
-    'cpu': 1,
-    'ram_mb': 1024,
-    'volumes': [
-      {
-        'id': 104660,
-        'name': 'boot',
-        'size_mb': 51200,
-        'created': '2025-11-14T19:00:00.685198Z'
-      }
-    ],
-    'nics': [
-      {
-        'id': 108318,
-        'network_id': 'l44n168',
-        'network_type': 'PublicShared',
-        'mac': 'ca:0b:f9:89:bf:97',
-        'ip_address': '93.183.74.72',
-        'mask': 24,
-        'gateway': '93.183.74.1/24',
-        'bandwidth_mbps': 50
-      }
-    ],
-    'image_id': 'Ubuntu-24.04.2-X64',
-    'is_power_on': True,
-    'name': 'c2xhdmF0dWtpbkBtYWlsLnJ1XzE3NjMxNDY3ODM',
-    'login': 'root',
-    'password': '1D3VDn3EwJ8kugPp',
-    'ssh_key_ids': [],
-    'state': 'Active',
-    'created': '2025-11-14T19:00:00.918876Z',
-    'tags': [],
-    'application_ids': []
-  }
-]
+{
+  'locations': [
+    {
+      'id': 'ix1',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 50,
+      'bandwidth_max': 1000,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768,
+        49152,
+        65536
+      ]
+    },
+    {
+      'id': 'ds1',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 50,
+      'bandwidth_max': 1000,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768,
+        49152,
+        65536,
+        98304,
+        131072
+      ]
+    },
+    {
+      'id': 'kz',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 10,
+      'bandwidth_max': 200,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768,
+        49152,
+        65536,
+        98304,
+        131072
+      ]
+    },
+    {
+      'id': 'uae',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 10,
+      'bandwidth_max': 50,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        24576,
+        32768,
+        49152,
+        57344,
+        65536,
+        81920,
+        88064,
+        98304,
+        131072
+      ]
+    },
+    {
+      'id': 'am2',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 50,
+      'bandwidth_max': 1000,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16,
+        20,
+        24,
+        32
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768
+      ]
+    },
+    {
+      'id': 'ca',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 50,
+      'bandwidth_max': 500,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768,
+        49152,
+        65536,
+        98304,
+        131072
+      ]
+    },
+    {
+      'id': 'nj3',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 50,
+      'bandwidth_max': 500,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768,
+        49152,
+        65536,
+        98304
+      ]
+    },
+    {
+      'id': 'br',
+      'system_volume_min': 25600,
+      'additional_volume_min': 10240,
+      'volume_max': 1024000,
+      'windows_system_volume_min': 25600,
+      'bandwidth_min': 50,
+      'bandwidth_max': 500,
+      'cpu_quantity_options': [
+        1,
+        2,
+        3,
+        4,
+        6,
+        8,
+        12,
+        16,
+        20,
+        24,
+        32
+      ],
+      'ram_size_options': [
+        1024,
+        2048,
+        3072,
+        4096,
+        8192,
+        16384,
+        32768,
+        49152,
+        65536,
+        98304,
+        131072
+      ]
+    }
+  ]
+}

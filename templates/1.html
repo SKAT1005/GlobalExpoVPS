@@ -1,0 +1,30 @@
+<div>
+  <input type="range" min="0" max="7" value="1" class="slider" id="cpuSlider">
+  <span id="cpuValue">2</span> ядер
+</div>
+
+<script>
+const location = {
+  // ... тот же словарь location
+};
+
+const cpuSlider = document.getElementById('cpuSlider');
+const cpuValue = document.getElementById('cpuValue');
+const cpuOptions = location.cpu_quantity_options;
+
+// Настройка слайдера
+cpuSlider.min = 0;
+cpuSlider.max = cpuOptions.length - 1;
+
+// Обновление отображаемого значения
+function updateCpuDisplay() {
+  const currentCpu = cpuOptions[cpuSlider.value];
+  cpuValue.textContent = currentCpu;
+}
+
+// Инициализация
+updateCpuDisplay();
+
+// Обработчик изменения
+cpuSlider.addEventListener('input', updateCpuDisplay);
+</script>

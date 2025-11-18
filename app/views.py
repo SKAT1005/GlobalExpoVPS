@@ -36,6 +36,17 @@ headers = {
     'X-API-KEY': api_key
 }
 
+locationNames = {
+    'ix1': 'Москва, 2nd Gen Intel',
+    'ds1': 'Москва, 5th Gen Intel',
+    'kz': 'Алматы',
+    'uae': 'Дубай',
+    'am2': 'Амстердам',
+    'ca': 'Торонто',
+    'nj3': 'Нью-Джерси',
+    'br': 'Сан-Паулу'
+}
+
 # Глобальное хранилище метаданных платежей
 PAYMENT_METADATA = {}  # payment_id → { "callback_url": ..., "user_id": ... }
 
@@ -98,7 +109,7 @@ def topup_success(request):
             return JsonResponse({'status': 'complite'}, status=200)
 
 
-def password_recovery(request):
+def email_verify(request):
     try:
         if request.method == 'POST':
             data = json.loads(request.body)
@@ -132,7 +143,7 @@ def password_recovery(request):
         return JsonResponse({'status': 'faild'}, status=400)
 
 
-def email_verify(request):
+def password_recovery(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         email = data.get('email')
@@ -187,9 +198,9 @@ class ProfileView(View):
                 if user.servers.filter(server_id=server_id):
                     server['ram_mb'] //= 1024
                     server['volumes'][0]['size_mb'] //= 1024
+                    server['location_id'] = locationNames[server['location_id']]
                     user_servers.append(server)
-            print(user_servers)
-        return render(request, 'profile.html', context={'servers': user_servers})
+        return render(request, 'profile.html', context={'servers': user_servers, 'registration': False})
 
     def post(self, request):
         errors = []
@@ -308,17 +319,20 @@ def turn_off_server(request):
 
 
 def delite_server(request):
-    if request.method == 'DELETE' and request.user.is_authenticated:
-        data = json.loads(request.body)
-        server_id = data.get('server_id')
-        user = request.user
-        server = user.servers.filter(server_id=server_id).first()
-        if server:
-            delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
-            requests.delete(url=delete_url, headers=headers)
-            server.delete()
+    try:
+        if request.method == 'DELETE' and request.user.is_authenticated:
+            data = json.loads(request.body)
+            server_id = data.get('server_id')
+            user = request.user
+            server = user.servers.filter(server_id=server_id).first()
+            if server:
+                delete_url = f'https://api.serverspace.ru/api/v1/servers/{server_id}'
+                requests.delete(url=delete_url, headers=headers)
+                server.delete()
             return HttpResponse("OK")
-    return HttpResponseBadRequest(status=404)
+        return HttpResponseBadRequest(status=404)
+    except Exception:
+        return HttpResponseBadRequest(status=404)
 
 
 @csrf_exempt
@@ -335,6 +349,8 @@ def get_price(request):
 
 def get_server_id(task_id, price, user):
     get_task_url = f'https://api.serverspace.ru/api/v1/tasks/{task_id}'
+    user.collect_server += 1
+    user.save(update_fields=['collect_server'])
     while True:
         try:
             responce = requests.get(url=get_task_url, headers=headers).json()
@@ -342,9 +358,12 @@ def get_server_id(task_id, price, user):
             server = Server.objects.create(
                 server_id=server_id,
                 price=price,
-                buy_date=timezone.now()
+                buy_date=timezone.now(),
+                pay_date=timezone.now()
             )
             user.servers.add(server)
+            user.collect_server -= 1
+            user.save(update_fields=['collect_server'])
             break
         except KeyError:
             time.sleep(5)
@@ -360,28 +379,30 @@ def buy_server(request):
             responce = requests.post(url=url, json=data, headers=headers).json()
             try:
                 price = responce['price'] * 1.1
-                if user.balance < price:
+                pay = round(price / 720, 2)
+                new_balance = round(user.balance - pay, 2)
+                if new_balance < 0:
                     return HttpResponseBadRequest(status=402)
-                else:
-                    try:
-                        buy_server_url = 'https://api.serverspace.ru/api/v1/servers'
-                        data['networks'] = [{"bandwidth_mbps": 50}]
-                        email = 'slavatukin@mail.ru'
-                        number = str(int(time.time()))
-                        new_string = f'{email}_{number}'
-                        server_name = base64.b64encode(new_string.encode('utf-8')).decode('utf-8')[:-1]
-                        data['name'] = server_name
-                        data['server_init_script'] = 'sudo apt update'
-                        print(data)
-                        responce = requests.post(url=buy_server_url, json=data, headers=headers).json()
-                        time.sleep(3)
-                        task_id = responce['task_id']
-                        thread = threading.Thread(target=get_server_id, args=(task_id, price, user))
-                        thread.start()
-                        return HttpResponse("OK")
-                    except Exception as e:
-                        print(f'Error: {e}')
-                        return HttpResponseBadRequest(status=404)
+                try:
+                    buy_server_url = 'https://api.serverspace.ru/api/v1/servers'
+                    data['networks'] = [{"bandwidth_mbps": 50}]
+                    email = 'slavatukin@mail.ru'
+                    number = str(int(time.time()))
+                    new_string = f'{email}_{number}'
+                    server_name = base64.b64encode(new_string.encode('utf-8')).decode('utf-8')[:-1]
+                    data['name'] = server_name
+                    data['server_init_script'] = 'sudo apt update'
+                    responce = requests.post(url=buy_server_url, json=data, headers=headers).json()
+                    time.sleep(3)
+                    user.balance = new_balance
+                    user.save(update_fields=['balance'])
+                    task_id = responce['task_id']
+                    thread = threading.Thread(target=get_server_id, args=(task_id, price, user))
+                    thread.start()
+                    return HttpResponse("OK")
+                except Exception as e:
+                    print(f'Error: {e}')
+                    return HttpResponseBadRequest(status=404)
             except Exception:
                 return HttpResponseBadRequest(status=400)
         except Exception as e:

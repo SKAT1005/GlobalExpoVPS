@@ -37,6 +37,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin): # Изменено на Ab
     servers = models.ManyToManyField('Server', blank=True, verbose_name='Серверы пользователя')
     reforce_password = models.IntegerField(default=None, blank=True, null=True, verbose_name='Точка для восстановления пароля')
     history = models.ManyToManyField('History', blank=True, verbose_name='История пополнения')
+    collect_server = models.IntegerField(default=0, verbose_name='Сколько серверов собирается')
 
     # Добавляем поля, которые обычно есть в AbstractUser, но отсутствуют в AbstractBaseUser
     is_staff = models.BooleanField(default=False, verbose_name='Статус персонала') # Для доступа к админке

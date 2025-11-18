@@ -26,5 +26,6 @@ urlpatterns = [
     path('buy_server', buy_server, name='buy_server'),
     path('turn_off_server', turn_off_server, name='turn_off_server'),
     path('delite_server', delite_server, name='delite_server'),
-    path('password_recovery', password_recovery, name='password_recovery')
+    path('password_recovery', password_recovery, name='password_recovery'),
+    path('email_verify', email_verify, name='email_verify')
 ]

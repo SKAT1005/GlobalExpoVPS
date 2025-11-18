@@ -813,12 +813,7 @@
         .contact-item i {
             color: var(--secondary);
             width: 16px;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
+        }gin-top: 1rem;
         }
 
         .social-link {
@@ -1051,6 +1046,7 @@
                     </div>
 
                     <!-- CPU Step -->
+                    <!-- CPU Step -->
                     <div class="config-step">
                         <div class="step-title">
                             <div class="step-icon">3</div>
@@ -1061,10 +1057,10 @@
                                 <span class="slider-label">Количество ядер</span>
                                 <span class="slider-value" id="cpuValue">2 ядра</span>
                             </div>
-                            <input type="range" min="1" max="32" value="2" class="slider" id="cpuSlider">
+                            <input type="range" min="0" max="7" value="1" class="slider" id="cpuSlider">
                             <div class="slider-controls">
-                                <span>1 ядро</span>
-                                <span id="MaxCPU">32 ядра</span>
+                                <span id="minCPU">1 ядро</span>
+                                <span id="maxCPU">16 ядер</span>
                             </div>
                         </div>
                     </div>
@@ -1080,10 +1076,10 @@
                                 <span class="slider-label">Объем памяти</span>
                                 <span class="slider-value" id="ramValue">4 ГБ</span>
                             </div>
-                            <input type="range" min="1" max="64" value="4" class="slider" id="ramSlider">
+                            <input type="range" min="0" max="8" value="3" class="slider" id="ramSlider">
                             <div class="slider-controls">
-                                <span>1 ГБ</span>
-                                <span id="MaxRAM">64 ГБ</span>
+                                <span id="minRAM">1 ГБ</span>
+                                <span id="maxRAM">64 ГБ</span>
                             </div>
                         </div>
                     </div>
@@ -1242,17 +1238,6 @@
                             <span>Круглосуточная поддержка</span>
                         </div>
                     </div>
-                    <div class="social-links">
-                        <a href="#" class="social-link">
-                            <i class="fab fa-telegram"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-vk"></i>
-                        </a>
-                        <a href="#" class="social-link">
-                            <i class="fab fa-whatsapp"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -1306,6 +1291,8 @@
 
     let locations = [];
     let isLoading = false;
+    let currentCpuOptions = [1, 2, 3, 4, 6, 8, 12, 16]; // Default values
+    let currentRamOptions = [1024, 2048, 3072, 4096, 8192, 16384, 32768, 49152, 65536]; // Default values
 
     // DOM Elements
     const locationOptions = document.getElementById('locationOptions');
@@ -1315,6 +1302,10 @@
     const cpuValue = document.getElementById('cpuValue');
     const ramValue = document.getElementById('ramValue');
     const storageValue = document.getElementById('storageValue');
+    const minCPU = document.getElementById('minCPU');
+    const maxCPU = document.getElementById('maxCPU');
+    const minRAM = document.getElementById('minRAM');
+    const maxRAM = document.getElementById('maxRAM');
     const totalPrice = document.getElementById('totalPrice');
     const hourlyPrice = document.getElementById('hourlyPrice');
     const summaryLocation = document.getElementById('summaryLocation');
@@ -1349,7 +1340,8 @@
 
         // CPU slider
         cpuSlider.addEventListener('input', function () {
-            currentConfig.cpu = parseInt(this.value);
+            const cpuIndex = parseInt(this.value);
+            currentConfig.cpu = currentCpuOptions[cpuIndex];
             cpuValue.textContent = `${currentConfig.cpu} ${getRussianWord(currentConfig.cpu, 'ядро', 'ядра', 'ядер')}`;
             updateSummary();
             calculatePrice();
@@ -1357,8 +1349,9 @@
 
         // RAM slider
         ramSlider.addEventListener('input', function () {
-            const ramGB = parseInt(this.value);
-            currentConfig.ram = ramGB * 1024; // Convert to MB
+            const ramIndex = parseInt(this.value);
+            currentConfig.ram = currentRamOptions[ramIndex];
+            const ramGB = Math.round(currentConfig.ram / 1024);
             ramValue.textContent = `${ramGB} ГБ`;
             updateSummary();
             calculatePrice();
@@ -1376,6 +1369,9 @@
         // Order button
         orderBtn.addEventListener('click', async function () {
             {% if request.user.is_authenticated %}
+                orderBtn.disabled = true;
+                orderBtn.innerHTML = '<div class="loading"></div><span>Запрос обрабатывается...</span>';
+
                 const requestBody = {
                     location_id: currentConfig.location.id,
                     image_id: currentConfig.os,
@@ -1389,25 +1385,34 @@
                     ]
                 };
 
-                const response = await fetch(`{% url 'buy_server' %}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(requestBody)
-                });
+                try {
+                    const response = await fetch(`{% url 'buy_server' %}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken')
+                        },
+                        body: JSON.stringify(requestBody)
+                    });
 
-                if (response.status === 200) {
-                    showNotification('Заказ принят!', 'Ваш сервер будет настроен в течение 15 минут и отобразится в вашем профиле.', 'success');
-                } else if (response.status === 402) {
-                    showNotification('Заказ не оформлен', 'На вашем балансе не хватает средств', 'error');
-            } else if (response.status === 400) {
-                    showNotification('Заказ не оформлен', 'Неверная конфигурация сервера, попробуйте изменить конфигурацию', 'error');
-                } else {
-                    showNotification('Заказ не оформлен', 'Произошла непредвиденная ошибка, повторите попытку позже', 'error');
+                    if (response.status === 200) {
+                        showNotification('Заказ принят!', 'Ваш сервер будет настроен в течение 15 минут и отобразится в вашем профиле.', 'success');
+                    } else if (response.status === 402) {
+                        showNotification('Заказ не оформлен', 'На вашем балансе не хватает средств. Желательно на балансе иметь 100 рублей', 'error');
+                    } else if (response.status === 400) {
+                        showNotification('Заказ не оформлен', 'Неверная конфигурация сервера, попробуйте изменить конфигурацию', 'error');
+                    } else {
+                        showNotification('Заказ не оформлен', 'Произошла непредвиденная ошибка, повторите попытку позже', 'error');
+                    }
+                } catch (error) {
+                    console.error('Order error:', error);
+                    showNotification('Ошибка', 'Не удалось отправить запрос на создание сервера', 'error');
+                } finally {
+                    orderBtn.disabled = false;
+                    orderBtn.innerHTML = '<i class="fas fa-shopping-cart"></i><span>Заказать сервер</span>';
                 }
             {% else %}
-                window.location.href = '{% url 'profile' %}'
+                window.location.href = '{% url 'profile' %}';
             {% endif %}
         });
     }
@@ -1417,10 +1422,15 @@
         try {
             showLoadingState();
 
-            const response = await fetch(`{% url 'get_locations'%}`, {});
+            const response = await fetch(`{% url 'get_locations'%}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
 
             if (!response.ok) {
-                throw new Error(`Недоступный параметр конфигов`);
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
             const data = await response.json();
@@ -1443,44 +1453,25 @@
             const locationCard = document.createElement('div');
             locationCard.className = 'option-card';
             locationCard.innerHTML = `
-                    <div class="option-icon">
-                        <i class="fas fa-server"></i>
-                    </div>
-                    <div class="option-name">${getLocationName(location.id)}</div>
-                    <div class="option-desc">До ${Math.max(...location.cpu_quantity_options)} ядер</div>
-                `;
+                <div class="option-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <div class="option-name">${getLocationName(location.id)}</div>
+                <div class="option-desc">До ${Math.max(...location.cpu_quantity_options)} ядер</div>
+            `;
 
             locationCard.addEventListener('click', () => selectLocation(location));
             locationOptions.appendChild(locationCard);
         });
     }
 
-    // Render error state
-    function renderErrorState() {
-        locationOptions.innerHTML = `
-                <div class="option-card" style="grid-column: 1 / -1;">
-                    <div class="option-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
-                    </div>
-                    <div class="option-name">Ошибка загрузки</div>
-                    <div class="option-desc">Попробуйте обновить страницу</div>
-                </div>
-            `;
-    }
-
-    // Show loading state
-    function showLoadingState() {
-        locationOptions.innerHTML = `
-                <div class="option-card loading-card" style="grid-column: 1 / -1;">
-                    <div class="loading"></div>
-                    <div class="option-name">Загрузка локаций...</div>
-                </div>
-            `;
-    }
-
     // Select a location
     function selectLocation(location) {
         currentConfig.location = location;
+
+        // Update CPU and RAM options from location
+        currentCpuOptions = location.cpu_quantity_options || [1, 2, 3, 4, 6, 8, 12, 16];
+        currentRamOptions = location.ram_size_options || [1024, 2048, 3072, 4096, 8192, 16384, 32768, 49152, 65536];
 
         // Update UI
         document.querySelectorAll('#locationOptions .option-card').forEach(card => {
@@ -1496,20 +1487,34 @@
 
     // Update sliders based on location constraints
     function updateSlidersForLocation(location) {
-        // CPU slider
-        const maxCPU = Math.max(...location.cpu_quantity_options);
-        cpuSlider.max = maxCPU;
-        cpuSlider.value = Math.min(currentConfig.cpu, maxCPU);
-        cpuValue.textContent = `${cpuSlider.value} ${getRussianWord(cpuSlider.value, 'ядро', 'ядра', 'ядер')}`;
-        currentConfig.cpu = parseInt(cpuSlider.value);
+        // CPU slider setup
+        const cpuOptions = location.cpu_quantity_options;
+        cpuSlider.min = 0;
+        cpuSlider.max = cpuOptions.length - 1;
 
-        // RAM slider
+        // Find closest available CPU value
+        const currentCpuIndex = findClosestIndex(currentConfig.cpu, cpuOptions);
+        cpuSlider.value = currentCpuIndex;
+        currentConfig.cpu = cpuOptions[currentCpuIndex];
+
+        cpuValue.textContent = `${currentConfig.cpu} ${getRussianWord(currentConfig.cpu, 'ядро', 'ядра', 'ядер')}`;
+        minCPU.textContent = `${cpuOptions[0]} ${getRussianWord(cpuOptions[0], 'ядро', 'ядра', 'ядер')}`;
+        maxCPU.textContent = `${cpuOptions[cpuOptions.length - 1]} ${getRussianWord(cpuOptions[cpuOptions.length - 1], 'ядро', 'ядра', 'ядер')}`;
+
+        // RAM slider setup
         const ramOptions = location.ram_size_options;
-        const maxRAM = Math.max(...ramOptions) / 1024; // Convert to GB
-        ramSlider.max = Math.min(64, maxRAM);
-        ramSlider.value = Math.min(parseInt(ramSlider.value), ramSlider.max);
-        ramValue.textContent = `${ramSlider.value} ГБ`;
-        currentConfig.ram = parseInt(ramSlider.value) * 1024;
+        ramSlider.min = 0;
+        ramSlider.max = ramOptions.length - 1;
+
+        // Find closest available RAM value
+        const currentRamIndex = findClosestIndex(currentConfig.ram, ramOptions);
+        ramSlider.value = currentRamIndex;
+        currentConfig.ram = ramOptions[currentRamIndex];
+
+        const ramGB = Math.round(currentConfig.ram / 1024);
+        ramValue.textContent = `${ramGB} ГБ`;
+        minRAM.textContent = `${Math.round(ramOptions[0] / 1024)} ГБ`;
+        maxRAM.textContent = `${Math.round(ramOptions[ramOptions.length - 1] / 1024)} ГБ`;
 
         // Storage slider
         const maxStorage = location.volume_max / 1024; // Convert to GB
@@ -1519,6 +1524,22 @@
         currentConfig.storage = parseInt(storageSlider.value) * 10 * 1024;
 
         document.getElementById('HardGB').textContent = `${storageSlider.max * 10} ГБ`;
+    }
+
+    // Helper function to find closest index in array
+    function findClosestIndex(value, array) {
+        let closestIndex = 0;
+        let closestDiff = Math.abs(value - array[0]);
+
+        for (let i = 1; i < array.length; i++) {
+            const diff = Math.abs(value - array[i]);
+            if (diff < closestDiff) {
+                closestDiff = diff;
+                closestIndex = i;
+            }
+        }
+
+        return closestIndex;
     }
 
     // Calculate price using API
@@ -1547,6 +1568,7 @@
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
                 },
                 body: JSON.stringify(requestBody)
             });
@@ -1560,10 +1582,10 @@
             // Update price display
             if (data.price) {
                 const monthlyPrice = Math.round(data.price);
-                const hourlyPriceconst = (monthlyPrice / 720).toFixed(2);
+                const hourlyPriceValue = (monthlyPrice / 720).toFixed(2);
 
                 totalPrice.textContent = `${monthlyPrice} ₽`;
-                hourlyPrice.textContent = `${hourlyPriceconst} ₽`;
+                hourlyPrice.textContent = `${hourlyPriceValue} ₽`;
 
                 orderBtn.disabled = false;
                 orderBtn.innerHTML = '<i class="fas fa-shopping-cart"></i><span>Заказать сервер</span>';
@@ -1573,9 +1595,9 @@
         } catch (error) {
             console.error('Error calculating price:', error);
             totalPrice.textContent = '—';
-            hourlyPrice.textContent = '— в час';
+            hourlyPrice.textContent = '—';
             orderBtn.disabled = true;
-            orderBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Ошибка расчета, недоступная конфигурация сервера</span>';
+            orderBtn.innerHTML = '<i class="fas fa-exclamation-triangle"></i><span>Ошибка расчета</span>';
         } finally {
             isLoading = false;
         }
@@ -1618,10 +1640,25 @@
         return five;
     }
 
+    // Helper function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
     // Show notification
     function showNotification(title, message, type = 'info') {
-        notification.className = `
-        notification ${type}`;
+        notification.className = `notification ${type}`;
         notificationTitle.textContent = title;
         notificationMessage.textContent = message;
         notification.classList.add('show');
@@ -1629,6 +1666,29 @@
         setTimeout(() => {
             notification.classList.remove('show');
         }, 5000);
+    }
+
+    // Render error state
+    function renderErrorState() {
+        locationOptions.innerHTML = `
+            <div class="option-card" style="grid-column: 1 / -1;">
+                <div class="option-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="option-name">Ошибка загрузки</div>
+                <div class="option-desc">Попробуйте обновить страницу</div>
+            </div>
+        `;
+    }
+
+    // Show loading state
+    function showLoadingState() {
+        locationOptions.innerHTML = `
+            <div class="option-card loading-card" style="grid-column: 1 / -1;">
+                <div class="loading"></div>
+                <div class="option-name">Загрузка локаций...</div>
+            </div>
+        `;
     }
 </script>
 </body>

@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin # Импортируем UserAdmin как BaseUserAdmin для удобства
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from .models import CustomUser
+from .models import CustomUser, Server
 
 class CustomUserAdmin(admin.ModelAdmin):
     """
@@ -32,7 +32,7 @@ class CustomUserAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("email", "password")}), # Поле email и стандартное поле пароля для смены
         ("Личная информация", {"fields": ("name", "surname", "phone", "balance", "reforce_password")}),
-        ("Серверы", {"fields": ("servers",)}),
+        ("Серверы", {"fields": ("servers", 'collect_server')}),
         ("Права доступа", {"fields": ("is_staff", "is_active",)}), # У вас нет is_superuser, groups, user_permissions
         ("Важные даты", {"fields": ("date_joined",)}),
     )
@@ -42,7 +42,7 @@ class CustomUserAdmin(admin.ModelAdmin):
         (None, {
             "classes": ("wide",),
             "fields": (
-                "email", "name", "surname", "phone", "balance",
+                "email", "name", "surname", "phone", "balance", 'collect_server',
                 "is_staff", "is_active",
                 "password", "password2", # Поля пароля для подтверждения при создании
             )
@@ -55,6 +55,11 @@ class CustomUserAdmin(admin.ModelAdmin):
     # Отключаем возможность изменения `date_joined` и `last_login` (если бы оно было)
     # при редактировании, т.к. они устанавливаются автоматически.
     readonly_fields = ("date_joined",)
+
+
+@admin.register(Server)
+class ServerAdmin(admin.ModelAdmin):
+    pass
 
 
 # Регистрируем модель CustomUser с вашим CustomUserAdmin классом
